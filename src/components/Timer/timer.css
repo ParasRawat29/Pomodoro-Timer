@@ -1,0 +1,49 @@
+
+.quote{
+    font-size: 1.5rem;
+    color: #CBC5C5;
+  }
+  
+  .TimerContainer{
+    margin-top: 1.7rem;
+  }
+  .circularProgressContainer{
+    width: 30%;
+    margin: auto;
+    align-items: center;
+  }
+  
+  .timertype{
+    color: aliceblue;
+  }
+  .timebtnContainer button{
+    margin: 1rem 1rem;
+    background-color: #FF8933;
+    color: black;
+    border: none;
+    outline: none;
+    font-weight: 600;
+    font-size: 1.5rem;
+    padding: 3px 10px;
+    border-radius: 5px;
+  }
+  
+  .timeLeft{
+    color: #ffffff;
+  }
+  
+  .CircularProgressbar-path {
+    stroke: rgba(130, 224, 149) !important;
+  }
+  .CircularProgressbar-trail {
+    stroke: gray !important;
+  }
+  .CircularProgressbar-text {
+    fill: rgba(130, 224, 149) !important;
+  }
+  .CircularProgressbar-background {
+    fill: rgba(130, 224, 149) !important;
+  }
+  .timerComponentWrapper{
+    width: 100%;
+  }
