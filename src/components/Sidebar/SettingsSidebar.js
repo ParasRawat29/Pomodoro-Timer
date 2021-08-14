@@ -1,12 +1,10 @@
 import { React, useState } from "react";
 import "./sidebar.css";
-
+import close from "../../vector/close.png";
 export default function SettingsSidebar(props) {
   console.log(props);
   var sidebarCss = {
     transform: props.sidebarIsOpen == 1 ? "translateX(0)" : "translateX(100%)",
-    // marginLeft :  props.sidebarIsOpen==1 ? "0" : "100px" ,
-    // opacity :  props.sidebarIsOpen==1 ? "1" : "0"
   };
 
   return (
@@ -16,7 +14,7 @@ export default function SettingsSidebar(props) {
           className="closeBtn"
           onClick={() => props.toggleSettingSideBar()}
         >
-          X
+          <img src={close} alt="closebtn" className="closeBtnIcon" />
         </button>
       </div>
       <div className="inputsContainer">
@@ -28,6 +26,7 @@ export default function SettingsSidebar(props) {
             min="1"
             max="90"
             onChange={(e) => props.setSessionVal(e.target.value)}
+            disabled={props.isTimerStarted == true ? "disabled" : null}
           />
         </div>
         <div className="inputDiv">
@@ -38,6 +37,7 @@ export default function SettingsSidebar(props) {
             min="1"
             max="30"
             onChange={(e) => props.setBreakVal(e.target.value)}
+            disabled={props.isTimerStarted == true ? "disabled" : null}
           />
         </div>
         <br />

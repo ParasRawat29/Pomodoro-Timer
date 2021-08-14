@@ -1,33 +1,34 @@
-.navbar{
-    padding: 15px;
-  }
-  nav button{
-    border:none;
-    outline: none;
-    background-color: inherit;
-  }
-  .tabBtn{
-    margin: 0 2rem;
-    background-color: transparent;
-    outline: none;
-    border: none;
-    font-family: Roboto;
-    font-size: 2rem;
-    line-height: 28px;
-    color: var(--lightColor);
-    font-weight: lighter;
-    transition: 0.3s;
-  }
-  .tabBtn:hover{
-    font-size: 2.5rem ;
-    /* border-bottom: 3px solid orange; */
-  }
-  .activetab{
-    border-bottom: 3px solid #50D1CA;
-    transition: all 0.25 ease;
-  }
-  .settingBtn{
-    position: absolute;
-    right: 10px;
-    clear: both;
-   }
+.navbar {
+  padding: 15px;
+}
+nav button {
+  border: none;
+  outline: none;
+  background-color: inherit;
+}
+.tabBtn {
+  margin: 0 2rem;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-family: Roboto;
+  font-size: 2rem;
+  line-height: 28px;
+  color: var(--lightColor);
+  font-weight: lighter;
+  transition: 0.3s;
+}
+.tabBtn:hover {
+  font-size: 2.5rem;
+  /* border-bottom: 3px solid orange; */
+}
+.activetab {
+  border-bottom: 3px solid #50d1ca;
+  transition: all 0.5 ease-in;
+}
+
+.settingBtn {
+  position: absolute;
+  right: 10px;
+  clear: both;
+}

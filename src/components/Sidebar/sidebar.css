@@ -1,70 +1,71 @@
-   .sidebarContainer{
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    box-shadow: -2px 6px 15px -3px rgba(255,255,255,0.26);
-    display: block;
-    background-color: #2E2D2D;
-    overflow:hidden;
-    transition: all 0.5s ease;
-    border: 0.3px solid rgba(214, 212, 212, 0.76);
-    padding: 3px;
-    width: 250px;
-    min-height: 50%;
-  }
-  .sidebarHeader{
-    text-align: right;
-    padding: 0 20px;
-  }
-
-  .closeBtn{
-    outline: none;
-    border: none;
-    background-color: inherit;
-    color: rgb(226, 107, 107);
-    font-size: 2rem;
+.sidebarContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  box-shadow: -2px 6px 15px -3px rgba(255, 255, 255, 0.26);
+  display: block;
+  background-color: #2e2d2d;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  border: 0.3px solid rgba(214, 212, 212, 0.76);
+  padding: 3px;
+  width: 250px;
+  min-height: 50%;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
-  .inputsContainer{
-      display:block;
-      width: 100%;
-      text-align: center;
-  }
-  .inputDiv{
-        display: block;
-        width: 100%;
-        margin: 10px;
-  }
-  label{
-    display: block;
-    color: aliceblue;
-    font-size: 1.5rem;
-  }
-  
-input{
-    font-size:1.5rem;
-    width:5rem;
-    padding:3px;
-    border:none;
-    border-bottom:3px solid #FF8933;
-    outline:none;
-    text-align:center;
-    margin:0 20px;
-    color: rgba(130, 224, 149);
-    background-color: inherit;
-    font-family: Poppins;
-    letter-spacing: 4px;
-  }
-  .musicName{
-    color: #CBC5C5;
-    font-size: 1rem;
-  }
-  .uploadBtnWapper{
-    overflow: hidden;
-  }
-  .uploadBtnWapper input{
-    width: 110px;
-    font-size: 1rem;
-    word-wrap: break-word;
-  }
-    
+.sidebarHeader {
+  text-align: right;
+  padding: 0 20px;
+}
+
+.closeBtn {
+  outline: none;
+  border: none;
+  background-color: inherit;
+  color: rgb(226, 107, 107);
+  font-size: 2rem;
+}
+.inputsContainer {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.inputDiv {
+  display: block;
+  width: 100%;
+  margin: 10px;
+}
+label {
+  display: block;
+  color: aliceblue;
+  font-size: 1.5rem;
+}
+
+input {
+  font-size: 1.5rem;
+  width: 5rem;
+  padding: 3px;
+  border: none;
+  border-bottom: 3px solid #ff8933;
+  outline: none;
+  text-align: center;
+  margin: 0 20px;
+  color: rgba(130, 224, 149);
+  background-color: inherit;
+  font-family: Poppins;
+  letter-spacing: 4px;
+}
+.musicName {
+  color: #cbc5c5;
+  font-size: 1rem;
+}
+.uploadBtnWapper {
+  overflow: hidden;
+}
+.uploadBtnWapper input {
+  width: 110px;
+  font-size: 1rem;
+  word-wrap: break-word;
+}
