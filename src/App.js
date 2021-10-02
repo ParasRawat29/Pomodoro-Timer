@@ -11,11 +11,13 @@ function App() {
   var [breakVal, setBreakVal] = useState("2");
   var [active, setActive] = useState("timer");
   var [isTimerStarted, setisTimerStarted] = useState(false);
+
   function handleActiveTab(tabName) {
     setActive(() => tabName);
   }
 
   function toggleSettingSideBar() {
+    // console.log("clicked");
     setSidebarIsOpen((pre) => !pre);
   }
 

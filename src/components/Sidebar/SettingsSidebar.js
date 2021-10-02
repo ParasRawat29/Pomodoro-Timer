@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React } from "react";
 import "./sidebar.css";
 import close from "../../vector/close.png";
 export default function SettingsSidebar(props) {
@@ -10,10 +10,7 @@ export default function SettingsSidebar(props) {
   return (
     <div className="sidebarContainer" style={sidebarCss}>
       <div className="sidebarHeader">
-        <button
-          className="closeBtn"
-          onClick={() => props.toggleSettingSideBar()}
-        >
+        <button className="closeBtn" onClick={props.toggleSettingSideBar}>
           <img src={close} alt="closebtn" className="closeBtnIcon" />
         </button>
       </div>
@@ -26,7 +23,7 @@ export default function SettingsSidebar(props) {
             min="1"
             max="90"
             onChange={(e) => props.setSessionVal(e.target.value)}
-            disabled={props.isTimerStarted == true ? "disabled" : null}
+            disabled={props.isTimerStarted}
           />
         </div>
         <div className="inputDiv">
@@ -37,7 +34,7 @@ export default function SettingsSidebar(props) {
             min="1"
             max="30"
             onChange={(e) => props.setBreakVal(e.target.value)}
-            disabled={props.isTimerStarted == true ? "disabled" : null}
+            disabled={props.isTimerStarted}
           />
         </div>
         <br />
