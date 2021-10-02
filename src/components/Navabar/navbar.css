@@ -1,5 +1,5 @@
 .navbar {
-  padding: 15px;
+  padding: 7px;
 }
 nav button {
   border: none;
@@ -20,7 +20,6 @@ nav button {
 }
 .tabBtn:hover {
   font-size: 2.5rem;
-  /* border-bottom: 3px solid orange; */
 }
 .activetab {
   border-bottom: 3px solid #50d1ca;
@@ -31,4 +30,35 @@ nav button {
   position: absolute;
   right: 10px;
   clear: both;
+}
+
+.signedInLinksWrapper {
+  display: flex;
+  background-color: rgb(220, 246, 105);
+  align-items: center;
+  width: 100%;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+.tabbtnsWrapper {
+  background-color: aliceblue;
+  display: flex;
+  background-color: rgb(88, 153, 58);
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  min-width: min-content;
+}
+.signoutBtn {
+  font-size: 1.4rem;
+  background-color: tomato;
+  padding: 2px 15px;
+  color: white;
+  font-weight: 600;
+  border-radius: 600px;
+}
+.signedOutLinksWrapper {
+  display: flex;
+  width: 90%;
+  justify-content: right;
 }

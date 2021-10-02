@@ -1,35 +1,17 @@
 import React, { useState } from "react";
 import settingIcon from "../../vector/settings.png";
+import SignedInLinks from "../Layout/SignedInLinks";
+import SignedOutLinks from "../Layout/SignedOutLinks";
 import "./navbar.css";
+
 export default function Navbar(props) {
   return (
-    <nav class="navbar">
-      <div class="container-fluid justify-content-center">
-        <button
-          className={props.active == "timer" ? "tabBtn activetab" : "tabBtn"}
-          type="button"
-          onClick={() => props.handleActiveTab("timer")}
-        >
-          Timer
-        </button>
-        <button
-          class={props.active == "analytics" ? "tabBtn activetab" : "tabBtn"}
-          type="button"
-          onClick={() => props.handleActiveTab("analytics")}
-        >
-          Analytics
-        </button>
-        <button
-          className="settingBtn"
-          onClick={() => props.toggleSettingSideBar()}
-          type="button"
-        >
-          <img src={settingIcon} />
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <h1 style={{ display: "inline" }}>AppName</h1>
+        <SignedInLinks {...props} />
+        <SignedOutLinks />
       </div>
-      <br />
-      <br />
-      <div className="line"></div>
     </nav>
   );
 }
