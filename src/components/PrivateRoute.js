@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect, Route } from "react-router";
 
 function PrivateRoute({ children, path, ...rest }) {
-  const isUser = true;
+  const isUser = false;
   if (!isUser) {
     return <Redirect to="/login" />;
   }
