@@ -6,12 +6,10 @@ import "./navbar.css";
 
 export default function Navbar(props) {
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <h1 style={{ display: "inline" }}>AppName</h1>
-        <SignedInLinks {...props} />
-        <SignedOutLinks />
-      </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+      <h1 style={{ display: "inline" }}>AppName</h1>
+      <SignedInLinks {...props} />
+      <SignedOutLinks />
     </nav>
   );
 }

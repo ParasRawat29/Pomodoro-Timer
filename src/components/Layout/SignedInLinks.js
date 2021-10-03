@@ -5,7 +5,7 @@ function SignedInLinks(props) {
   return (
     <div className="signedInLinksWrapper">
       <div className="tabbtnsWrapper">
-        <Link to="/timer" exact>
+        <Link to="/" exact>
           <button
             className={props.active == "timer" ? "tabBtn activetab" : "tabBtn"}
             type="button"

@@ -3,11 +3,13 @@ import Navbar from "./components/Navabar/Navbar";
 import Timer from "./components/Timer/Timer";
 import SettingsSidebar from "./components/Sidebar/SettingsSidebar";
 import Analytics from "./components/Analytics/Analytics";
-
 import { useState } from "react";
-import { Route, Switch } from "react-router";
+import { Redirect, Route, Switch } from "react-router";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import PublicRoute from "./components/PublicRoute";
+import PrivateRoute from "./components/PrivateRoute";
+
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(0);
   var [sessionVal, setSessionVal] = useState("25");
@@ -26,33 +28,35 @@ function App() {
 
   return (
     <>
-      <div class="mainContainer">
-        <Navbar
-          toggleSettingSideBar={toggleSettingSideBar}
-          active={active}
-          handleActiveTab={handleActiveTab}
-        />
-        <Switch>
-          <Route path="/timer" exact>
+      <Navbar
+        toggleSettingSideBar={toggleSettingSideBar}
+        active={active}
+        handleActiveTab={handleActiveTab}
+      />
+
+      <Switch>
+        <PublicRoute path="/login">
+          <LoginPage />
+        </PublicRoute>
+        <PublicRoute path="/signup">
+          <SignUpPage />
+        </PublicRoute>
+        <PrivateRoute path="/">
+          <div class="mainContainer">
             <Timer
               sessionVal={sessionVal}
               breakVal={breakVal}
               isTimerStarted={isTimerStarted}
               setisTimerStarted={setisTimerStarted}
             />
-          </Route>
-          <Route path="/analytics" exact>
-            <Analytics />
-          </Route>
-          <Route path="/login" exact>
-            <LoginPage />
-          </Route>
-          <Route path="/signup" exact>
-            <SignUpPage />
-          </Route>
-        </Switch>
+          </div>
+        </PrivateRoute>
+        <PrivateRoute path="/analytics">
+          <Analytics />
+        </PrivateRoute>
+      </Switch>
 
-        {/* <SettingsSidebar
+      {/* <SettingsSidebar
             toggleSettingSideBar={toggleSettingSideBar}
             sidebarIsOpen={sidebarIsOpen}
             setSessionVal={setSessionVal}
@@ -61,7 +65,7 @@ function App() {
             breakVal={breakVal}
             isTimerStarted={isTimerStarted}
           /> */}
-      </div>
+      {/* </div> */}
     </>
   );
 }
