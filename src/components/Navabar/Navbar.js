@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import settingIcon from "../../vector/settings.png";
+import React, { useContext } from "react";
 import { ProfileContext } from "../context/profile.context";
 import SignedInLinks from "../Layout/SignedInLinks";
 import SignedOutLinks from "../Layout/SignedOutLinks";

@@ -4,7 +4,7 @@ import { ProfileContext } from "./context/profile.context";
 
 function PrivateRoute({ children, path, ...rest }) {
   const { profiles, isLoading } = useContext(ProfileContext);
-  console.log("inPrivateRoute", "isloading: ", isLoading, "profiles", profiles);
+  // console.log("inPrivateRoute", "isloading: ", isLoading, "profiles", profiles);
 
   if (isLoading) {
     return <h1>Loading....</h1>;
