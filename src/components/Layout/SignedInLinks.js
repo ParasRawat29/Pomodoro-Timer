@@ -1,7 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
 
 function SignedInLinks(props) {
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("signed out");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="signedInLinksWrapper">
       <div className="tabbtnsWrapper">
@@ -24,7 +36,9 @@ function SignedInLinks(props) {
           </button>
         </Link>
       </div>
-      <button className="signoutBtn">Signout</button>
+      <button className="signoutBtn" onClick={handleSignOut}>
+        Signout
+      </button>
     </div>
   );
 }

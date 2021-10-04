@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
+import { ProfileProvider } from "./components/context/profile.context";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(0);
@@ -28,35 +29,36 @@ function App() {
 
   return (
     <>
-      <Navbar
-        toggleSettingSideBar={toggleSettingSideBar}
-        active={active}
-        handleActiveTab={handleActiveTab}
-      />
+      <ProfileProvider>
+        <Navbar
+          toggleSettingSideBar={toggleSettingSideBar}
+          active={active}
+          handleActiveTab={handleActiveTab}
+        />
 
-      <Switch>
-        <PublicRoute path="/login">
-          <LoginPage />
-        </PublicRoute>
-        <PublicRoute path="/signup">
-          <SignUpPage />
-        </PublicRoute>
-        <PrivateRoute path="/">
-          <div class="mainContainer">
-            <Timer
-              sessionVal={sessionVal}
-              breakVal={breakVal}
-              isTimerStarted={isTimerStarted}
-              setisTimerStarted={setisTimerStarted}
-            />
-          </div>
-        </PrivateRoute>
-        <PrivateRoute path="/analytics">
-          <Analytics />
-        </PrivateRoute>
-      </Switch>
+        <Switch>
+          <PublicRoute path="/login">
+            <LoginPage />
+          </PublicRoute>
+          <PublicRoute path="/signup">
+            <SignUpPage />
+          </PublicRoute>
+          <PrivateRoute path="/" exact>
+            <div class="mainContainer">
+              <Timer
+                sessionVal={sessionVal}
+                breakVal={breakVal}
+                isTimerStarted={isTimerStarted}
+                setisTimerStarted={setisTimerStarted}
+              />
+            </div>
+          </PrivateRoute>
+          <PrivateRoute path="/analytics">
+            <Analytics />
+          </PrivateRoute>
+        </Switch>
 
-      {/* <SettingsSidebar
+        {/* <SettingsSidebar
             toggleSettingSideBar={toggleSettingSideBar}
             sidebarIsOpen={sidebarIsOpen}
             setSessionVal={setSessionVal}
@@ -65,7 +67,8 @@ function App() {
             breakVal={breakVal}
             isTimerStarted={isTimerStarted}
           /> */}
-      {/* </div> */}
+        {/* </div> */}
+      </ProfileProvider>
     </>
   );
 }

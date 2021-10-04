@@ -72,9 +72,9 @@ function LoginPage() {
     console.log(details);
     signInWithEmailAndPassword(auth, details.email, details.password)
       .then((credential) => {
-        // const user = credential.user;
+        const user = credential.user;
 
-        console.log("logged in");
+        console.log("logged in", user);
         setDetails(() => {
           return {
             email: "",
