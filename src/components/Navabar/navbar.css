@@ -1,13 +1,35 @@
-.navbar {
-  padding: 7px;
+.navbarWrapper {
+  padding: 3px;
   display: flex;
   flex-direction: row;
+  width: 100%;
+  color: azure;
+  font-size: 1rem;
+  background-color: #1a1a1d;
+  display: flex;
+  justify-content: center;
+  padding: 3px;
+  border-bottom: 1px solid rgb(153, 150, 150);
 }
-nav button {
-  border: none;
+button {
+  outline: 0;
+  border: 0;
+}
+.logo {
+  font-size: 1.5rem;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+.signupBtn,
+.loginBtn {
+  font-size: 1.5rem;
+  padding: 2px 10px;
   outline: none;
+  border: none;
+  margin: 0 10px;
   background-color: inherit;
-  cursor: pointer;
+  color: white;
 }
 .tabBtn {
   margin: 0 2rem;
@@ -17,7 +39,7 @@ nav button {
   font-family: Roboto;
   font-size: 2rem;
   line-height: 28px;
-  color: var(--lightColor);
+  color: #64d89c;
   font-weight: lighter;
   transition: 0.3s;
 }
@@ -29,24 +51,18 @@ nav button {
   transition: all 0.5 ease-in;
 }
 
-.settingBtn {
-  position: absolute;
-  right: 10px;
-  clear: both;
-}
-
 .signedInLinksWrapper {
   display: flex;
-  background-color: rgb(220, 246, 105);
+  /* background-color: rgb(220, 246, 105); */
   align-items: center;
   width: 100%;
   flex-wrap: nowrap;
   justify-content: center;
 }
 .tabbtnsWrapper {
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
   display: flex;
-  background-color: rgb(88, 153, 58);
+  /* background-color: rgb(88, 153, 58); */
   justify-content: center;
   align-items: center;
   width: 90%;
@@ -60,8 +76,54 @@ nav button {
   font-weight: 600;
   border-radius: 600px;
 }
+.signoutBtn:hover {
+  background-color: white;
+  color: tomato;
+}
+
 .signedOutLinksWrapper {
   display: flex;
   width: 90%;
   justify-content: right;
+}
+
+@media screen and (max-width: 370px) {
+  .loginBtn,
+  .signupBtn {
+    margin: 0 3px;
+    padding: 2px 5px;
+    font-size: 1.4rem;
+  }
+}
+@media screen and (max-width: 455px) {
+  .tabbtnsWrapper {
+    display: none;
+  }
+  .signedInLinksWrapper {
+    display: inline;
+    /* background-color: rgb(220, 246, 105); */
+    align-items: center;
+    width: fit-content;
+    margin-left: auto;
+  }
+}
+@media screen and (max-width: 600px) {
+  .tabBtn {
+    margin: 0 1rem;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-family: Roboto;
+    font-size: 1.5rem;
+    line-height: 28px;
+    font-weight: lighter;
+    transition: 0.3s;
+  }
+  .tabBtn:hover {
+    font-size: 1.7rem;
+  }
+  .activetab {
+    border-bottom: 3px solid #50d1ca;
+    transition: all 0.5 ease-in;
+  }
 }

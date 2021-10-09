@@ -1,49 +1,96 @@
+.quote {
+  font-size: 1.5rem;
+  color: #cbc5c5;
+}
 
-.quote{
-    font-size: 1.5rem;
-    color: #CBC5C5;
+.TimerContainer {
+  margin-top: 1.7rem;
+}
+.circularProgressContainer {
+  width: 60%;
+  margin: auto;
+  min-width: 300px;
+  align-items: center;
+}
+
+.timertype {
+  color: aliceblue;
+}
+.timebtnContainer button {
+  margin: 1rem 1rem;
+  background-color: #ff8933;
+  color: black;
+  border: none;
+  outline: none;
+  font-weight: 600;
+  font-size: 1.5rem;
+  padding: 3px 10px;
+  border-radius: 5px;
+}
+
+.timeLeft {
+  color: #ffffff;
+}
+
+.CircularProgressbar-path {
+  stroke: rgba(130, 224, 149) !important;
+}
+.CircularProgressbar-trail {
+  stroke: gray !important;
+}
+.CircularProgressbar-text {
+  fill: rgba(130, 224, 149) !important;
+}
+.CircularProgressbar-background {
+  fill: rgba(130, 224, 149) !important;
+}
+.timerComponentWrapper {
+  width: 100%;
+  position: absolute;
+  height: 90vh;
+}
+.navLinkWrapper {
+  position: absolute;
+  bottom: 0;
+  right: 2px;
+  display: none;
+  text-align: center;
+}
+.navLinks {
+  font-size: 1.5rem;
+  padding: 0px;
+  text-align: center;
+  display: flex;
+  visibility: hidden;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.navLinks a {
+  color: white;
+  text-decoration: none;
+}
+.navLinks .active {
+  color: #64d89c;
+}
+.toggleBtn {
+  margin: auto;
+  font-size: 2rem;
+  border-radius: 50%;
+  padding: 0 10px;
+}
+
+.settingBtn {
+  position: absolute;
+  right: 10px;
+  background-color: inherit;
+  outline: none;
+}
+@media only screen and (max-width: 455px) {
+  .navLinkWrapper {
+    display: block;
   }
-  
-  .TimerContainer{
-    margin-top: 1.7rem;
-  }
-  .circularProgressContainer{
-    width: 30%;
-    margin: auto;
-    align-items: center;
-  }
-  
-  .timertype{
-    color: aliceblue;
-  }
-  .timebtnContainer button{
-    margin: 1rem 1rem;
-    background-color: #FF8933;
-    color: black;
-    border: none;
-    outline: none;
-    font-weight: 600;
-    font-size: 1.5rem;
-    padding: 3px 10px;
-    border-radius: 5px;
-  }
-  
-  .timeLeft{
-    color: #ffffff;
-  }
-  
-  .CircularProgressbar-path {
-    stroke: rgba(130, 224, 149) !important;
-  }
-  .CircularProgressbar-trail {
-    stroke: gray !important;
-  }
-  .CircularProgressbar-text {
-    fill: rgba(130, 224, 149) !important;
-  }
-  .CircularProgressbar-background {
-    fill: rgba(130, 224, 149) !important;
-  }
-  .timerComponentWrapper{
-    width: 100%;
-  }
+}

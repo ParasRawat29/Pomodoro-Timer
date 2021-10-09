@@ -36,11 +36,6 @@ export default function SettingsSidebar(props) {
             disabled={props.isTimerStarted}
           />
         </div>
-        <br />
-        <div className="uploadBtnWapper">
-          <label>Music</label>
-          <input type="file" name="musicfile" placeholder="ioi" />
-        </div>
       </div>
     </div>
   );

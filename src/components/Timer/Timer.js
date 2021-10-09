@@ -5,18 +5,21 @@ import SettingsSidebar from "../Sidebar/SettingsSidebar";
 import settingIcon from "../../vector/settings.png";
 import "./timer.css";
 import { database } from "../../config/firebase";
-import { set, ref, push, update, child, get } from "firebase/database";
+import { set, ref, update, child, get } from "firebase/database";
 import { ProfileContext } from "../context/profile.context";
+import { useLocation } from "react-router";
+import { Link } from "react-router-dom";
 
-export default function Timer(props) {
+export default function Timer() {
   const { profiles, isLoading } = useContext(ProfileContext);
-
+  const [navOpen, setNavOpen] = useState(false);
+  const location = useLocation();
+  var [sessionVal, setSessionVal] = useState("25");
+  var [breakVal, setBreakVal] = useState("2");
   var [sessionlenth, setSessionLength] = useState(
-    parseInt(props.sessionVal, 10) * 60
+    parseInt(sessionVal, 10) * 60
   );
-  var [breaklength, setBreakLength] = useState(
-    parseInt(props.breakVal, 10) * 60
-  );
+  var [breaklength, setBreakLength] = useState(parseInt(breakVal, 10) * 60);
 
   const [sidebarIsOpen, setSidebarIsOpen] = useState(0);
   var [timeLeft, setTimeLeft] = useState(sessionlenth);
@@ -62,7 +65,6 @@ export default function Timer(props) {
     get(child(ref(database), `profiles/${profiles.uid}/data/${day}`))
       .then(async (snap) => {
         if (snap.exists()) {
-          //checking if date is already present
           const preTime = snap.val().y;
           const newTime = preTime + data.y;
           const newdata = {
@@ -75,8 +77,7 @@ export default function Timer(props) {
             newdata
           );
         } else {
-          console.log("nodata");
-          await update(
+          await set(
             ref(database, `profiles/${profiles.uid}/data/${day}`),
             data
           );
@@ -88,16 +89,16 @@ export default function Timer(props) {
   };
   useEffect(() => {
     setTimerTime();
-  }, [timeLeft, sessionlenth, breaklength, props.sessionVal, props.breakVal]);
+  }, [timeLeft, sessionlenth, breaklength, sessionVal, breakVal]);
 
   useEffect(() => {
-    setSessionLength(() => parseInt(props.sessionVal, 10) * 60);
-    setBreakLength(() => parseInt(props.breakVal, 10) * 60);
+    setSessionLength(() => parseInt(sessionVal, 10) * 60);
+    setBreakLength(() => parseInt(breakVal, 10) * 60);
     setTimeLeft(() => sessionlenth);
     setTimeLeftInMin(() => timeLeft / 60);
     setTimeLeftInSec(() => timeLeft % 60);
     setStartTime(() => sessionlenth);
-  }, [, props.sessionVal, props.breakVal, sessionlenth]);
+  }, [, sessionVal, breakVal, sessionlenth]);
 
   useEffect(() => {
     if (timeLeft == 0) {
@@ -112,7 +113,7 @@ export default function Timer(props) {
           x: day,
           y: timespent,
         };
-        // console.log(data, day);
+
         putTodatabase(data, day)
           .then(() => {
             console.log("data putted");
@@ -132,30 +133,33 @@ export default function Timer(props) {
   }, [timeLeft, sessionlenth, breaklength]);
 
   return (
-    <div className="container-fluid timerComponentWrapper">
+    <div className="timerComponentWrapper">
       <SettingsSidebar
         toggleSettingSideBar={toggleSettingSideBar}
         sidebarIsOpen={sidebarIsOpen}
-        setSessionVal={props.setSessionVal}
-        setBreakVal={props.setBreakVal}
-        sessionVal={props.sessionVal}
-        breakVal={props.breakVal}
+        setSessionVal={setSessionVal}
+        setBreakVal={setBreakVal}
+        sessionVal={sessionVal}
+        breakVal={breakVal}
         isTimerStarted={isTimerStarted}
       />
       <button
+        className="settingBtn"
         onClick={() => {
           setSidebarIsOpen((pre) => !pre);
         }}
       >
         <img src={settingIcon} alt="" />
       </button>
-      <div className="quote">Little more left keeping going</div>
       <div className="TimerContainer">
         <h2 className="timertype">{timerType}</h2>
         <div className="circularProgressContainer">
           <CircularProgressbar //see the library here: https://www.npmjs.com/package/react-circular-progressbar
             maxValue={startTime}
             value={startTime - timeLeft}
+            styles={{
+              root: { width: "100%", minWidth: "300px", maxWidth: "450px" },
+            }}
             text={`${
               timeLeftInMin < 10 ? "0" + timeLeftInMin : timeLeftInMin
             } : 
@@ -166,7 +170,9 @@ export default function Timer(props) {
           <button
             type="button"
             className="timebtn"
-            onClick={() => startTimer()}
+            onClick={() => {
+              startTimer();
+            }}
           >
             Start
           </button>
@@ -192,6 +198,28 @@ export default function Timer(props) {
               build/testable-projects-fcc/audio/BeepSound.wav"
         ></source>
       </audio>
+      <div className="navLinkWrapper">
+        <ul
+          className="navLinks"
+          style={{
+            height: `${navOpen ? "100px" : "0px"}`,
+            visibility: `${navOpen ? "visible" : "hidden"}`,
+          }}
+        >
+          <Link to="/" className={location.pathname === "/" ? "active" : ""}>
+            Timer
+          </Link>
+          <Link
+            to="/analytics"
+            className={location.pathname.includes("/analytics") ? "active" : ""}
+          >
+            Analytics
+          </Link>
+        </ul>
+        <button className="toggleBtn" onClick={() => setNavOpen((pre) => !pre)}>
+          {navOpen ? <i class="bi bi-x-lg"></i> : <i class="bi bi-list"></i>}
+        </button>
+      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@
   background: #f2f2f2;
   box-shadow: none !important;
   border: none;
+  margin: 5px;
 }
 .form-control:focus {
   background: #e2e2e2;
@@ -12,7 +13,8 @@
   border-radius: 3px;
 }
 .signup-form {
-  width: 390px;
+  width: 50%;
+  min-width: 300px;
   margin: auto auto;
 }
 .signup-form form {
@@ -76,3 +78,24 @@
 .hint-text a {
   color: rgb(83, 135, 218);
 }
+.loginBtnWrapper {
+  width: 70%;
+  min-width: 240px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.loginBtnWrapper .btn {
+  min-width: 210px;
+  padding: 3px;
+  width: 100%;
+  border-radius: 5px;
+  max-width: 450px;
+  margin: 10px auto;
+}
+/* .loginBtn {
+
+} */

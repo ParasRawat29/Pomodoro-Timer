@@ -1,39 +1,36 @@
-import React from "react";
-import { Line, Bar } from "react-chartjs-2";
+import React, { useContext, useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 import "./analytics.css";
+import { DataTimeContext } from "../context/dataTime.context";
+import { useLocation } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function Analytics() {
-  const data = {
+  const { data, isLoading } = useContext(DataTimeContext);
+  const [dataInFormOfArray, setDataInFormOfArray] = useState(null);
+  const [navOpen, setNavOpen] = useState(false);
+  const location = useLocation();
+
+  // console.log(range.min, range.max);
+  useEffect(() => {
+    setDataInFormOfArray(() => {
+      return data
+        ? Object.keys(data).map((item) => {
+            return {
+              x: data[item].x,
+              y: data[item].y / 60,
+            };
+          })
+        : [];
+    });
+  }, [data]);
+
+  const dataInChart = {
     datasets: [
       {
-        label: "# of Votes",
-        data: [
-          // { x: "2021-01-25T13:00:00", y: 23 },
-          // { x: "2021-01-25T13:10:00", y: 13 },
-          // { x: "2021-01-25T14:00:00", y: 24 },
-          // { x: "2021-01-25T14:00:00", y: 23 },
-          // { x: "2021-01-25T15:10:00", y: 13 },
-          // { x: "2021-01-25T16:00:00", y: 24 },
-          // { x: "2021-01-25T17:00:00", y: 23 },
-          // { x: "2021-01-25T18:10:00", y: 13 },
-          // { x: "2021-01-25T19:00:00", y: 24 },
-          { x: "2021-02-12", y: 22 },
-
-          { x: "2021-02-15", y: 29 },
-          { x: "2021-02-27", y: 2 },
-          { x: "2021-03-18", y: 22 },
-          { x: "2021-03-20", y: 18 },
-          { x: "2021-03-21", y: 45 },
-          { x: "2021-04-28", y: 22 },
-          { x: "2021-07-28", y: 20 },
-          { x: "2021-09-28", y: 28 },
-          { x: "2021-12-28", y: 12 },
-          { x: "2022-01-28", y: 2 },
-          // { x: "2022-01-28", y: 20 },
-          { x: "2022-03-28", y: 22 },
-          { x: "2022-03-28", y: 40 },
-        ],
+        label: "minutes",
+        data: dataInFormOfArray,
         fill: false,
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgba(255, 99, 132, 0.2)",
@@ -43,6 +40,7 @@ export default function Analytics() {
   };
 
   const options = {
+    maintainAspectRatio: false,
     scales: {
       x: {
         type: "time",
@@ -53,18 +51,51 @@ export default function Analytics() {
           color: "rgba(171,171,171,0.21)",
           display: true,
         },
+        ticks: {
+          callback: function (value, index, values) {
+            return value;
+          },
+        },
       },
       y: {
         grid: {
           display: false,
         },
+        ticks: {
+          display: "false",
+        },
+
+        beginAtZero: true,
       },
     },
   };
   return (
-    <div className="AnalyticsContainer">
+    <div className="AnalyticsWrapper">
       <div className="chartContainer">
-        <Line data={data} options={options} />
+        <Bar data={dataInChart} options={options} />
+      </div>
+
+      <div className="navLinkWrapper">
+        <ul
+          className="navLinks"
+          style={{
+            height: `${navOpen ? "100px" : "0px"}`,
+            visibility: `${navOpen ? "visible" : "hidden"}`,
+          }}
+        >
+          <Link to="/" className={location.pathname === "/" ? "active" : ""}>
+            Timer
+          </Link>
+          <Link
+            to="/analytics"
+            className={location.pathname.includes("/analytics") ? "active" : ""}
+          >
+            Analytics
+          </Link>
+        </ul>
+        <button className="toggleBtn" onClick={() => setNavOpen((pre) => !pre)}>
+          {navOpen ? <i class="bi bi-x-lg"></i> : <i class="bi bi-list"></i>}
+        </button>
       </div>
     </div>
   );

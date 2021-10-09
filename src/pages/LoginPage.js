@@ -90,6 +90,7 @@ function LoginPage() {
     <div>
       <div class="signup-form">
         <form action="" method="">
+          <h3>Login</h3>
           <div class="row">
             <div class="form-group">
               <input
@@ -125,11 +126,15 @@ function LoginPage() {
           </div>
         </form>
       </div>
-      <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-warning" type="button" onClick={onGoogleSignIn}>
+      <div className="loginBtnWrapper">
+        <button
+          className="btn btn-warning "
+          type="button"
+          onClick={onGoogleSignIn}
+        >
           Google Signin
         </button>
-        <button class="btn btn-primary" type="button" onClick={DemoSignIn}>
+        <button className="btn btn-primary" type="button" onClick={DemoSignIn}>
           Demo Signin
         </button>
       </div>

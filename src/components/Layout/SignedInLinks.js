@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
+import { useLocation } from "react-router";
 
 function SignedInLinks(props) {
+  const location = useLocation();
+
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -19,25 +22,27 @@ function SignedInLinks(props) {
       <div className="tabbtnsWrapper">
         <Link to="/" exact>
           <button
-            className={props.active == "timer" ? "tabBtn activetab" : "tabBtn"}
+            className={location.pathname == "/" ? "tabBtn activetab" : "tabBtn"}
             type="button"
-            onClick={() => props.handleActiveTab("timer")}
           >
             Timer
           </button>
         </Link>
         <Link to="/analytics" exact>
           <button
-            class={props.active == "analytics" ? "tabBtn activetab" : "tabBtn"}
+            className={
+              location.pathname.includes("/analytics")
+                ? "tabBtn activetab"
+                : "tabBtn"
+            }
             type="button"
-            onClick={() => props.handleActiveTab("analytics")}
           >
             Analytics
           </button>
         </Link>
       </div>
       <button className="signoutBtn" onClick={handleSignOut}>
-        Signout
+        Logout
       </button>
     </div>
   );

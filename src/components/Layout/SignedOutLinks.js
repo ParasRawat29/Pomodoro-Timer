@@ -5,10 +5,10 @@ function SignedOutLinks() {
   return (
     <div className="signedOutLinksWrapper">
       <Link to="/login" exact>
-        <button className="tabBtn">Login</button>
+        <button className="loginBtn">Login</button>
       </Link>
       <Link to="/signup" exact>
-        <button className="tabBtn">SignUp</button>
+        <button className="signupBtn">SignUp</button>
       </Link>
     </div>
   );
