@@ -9,13 +9,15 @@ import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
 import { ProfileProvider } from "./components/context/profile.context";
 import { DataTimeProvider } from "./components/context/dataTime.context";
+import { useState } from "react";
 
 function App() {
+  var [isTimerStarted, setisTimerStarted] = useState(false);
   return (
     <>
       <ProfileProvider>
         <DataTimeProvider>
-          <Navbar />
+          <Navbar isTimerStarted={isTimerStarted} />
 
           <Switch>
             <PublicRoute path="/login">
@@ -26,7 +28,10 @@ function App() {
             </PublicRoute>
             <PrivateRoute path="/" exact>
               <div class="mainContainer">
-                <Timer />
+                <Timer
+                  isTimerStarted={isTimerStarted}
+                  setisTimerStarted={setisTimerStarted}
+                />
               </div>
             </PrivateRoute>
             <PrivateRoute path="/analytics">

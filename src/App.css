@@ -5,10 +5,17 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 :root {
   --darkbackground: #1a1a1d;
   --lightColor: #ffffff;
   overflow: hidden;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+input:disabled {
+  cursor: not-allowed;
 }
 .line {
   width: 100%;

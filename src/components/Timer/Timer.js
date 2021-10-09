@@ -16,7 +16,7 @@ import { ProfileContext } from "../context/profile.context";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 
-export default function Timer() {
+export default function Timer({ isTimerStarted, setisTimerStarted }) {
   const { profiles } = useContext(ProfileContext);
   const [navOpen, setNavOpen] = useState(false);
   const location = useLocation();
@@ -34,7 +34,6 @@ export default function Timer() {
   var [timeLeftInSec, setTimeLeftInSec] = useState(timeLeft % 60);
   var [timerType, setTimerType] = useState("session");
   var [startTime, setStartTime] = useState(sessionlenth);
-  var [isTimerStarted, setisTimerStarted] = useState(false);
 
   const setTimerTime = useCallback(
     function setTimerTime() {
