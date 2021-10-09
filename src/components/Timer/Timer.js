@@ -230,14 +230,35 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
             visibility: `${navOpen ? "visible" : "hidden"}`,
           }}
         >
-          <Link to="/" className={location.pathname === "/" ? "active" : ""}>
-            Timer
+          <Link to={`${isTimerStarted ? "" : "/"}`}>
+            <button
+              className={location.pathname == "/" ? "active" : ""}
+              style={{
+                outline: "none",
+                backgroundColor: "inherit",
+              }}
+              disabled={isTimerStarted}
+            >
+              Timer
+            </button>
           </Link>
+
           <Link
-            to="/analytics"
-            className={location.pathname.includes("/analytics") ? "active" : ""}
+            to={`${isTimerStarted ? "" : "/analytics"}`}
+            disabled={isTimerStarted}
           >
-            Analytics
+            <button
+              className={
+                location.pathname.includes("/analytics") ? "active" : ""
+              }
+              style={{
+                outline: "none",
+                backgroundColor: "inherit",
+              }}
+              disabled={isTimerStarted}
+            >
+              Analytics
+            </button>
           </Link>
         </ul>
         <button className="toggleBtn" onClick={() => setNavOpen((pre) => !pre)}>

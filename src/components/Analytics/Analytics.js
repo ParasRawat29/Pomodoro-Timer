@@ -12,7 +12,6 @@ export default function Analytics() {
   const [navOpen, setNavOpen] = useState(false);
   const location = useLocation();
 
-  // console.log(range.min, range.max);
   useEffect(() => {
     setDataInFormOfArray(() => {
       return data
@@ -41,6 +40,21 @@ export default function Analytics() {
 
   const options = {
     maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          title: (context) => {
+            const d = new Date(context[0].raw.x);
+            const formattedDate = d.toLocaleString([], {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            });
+            return formattedDate;
+          },
+        },
+      },
+    },
     scales: {
       x: {
         type: "time",
@@ -50,11 +64,6 @@ export default function Analytics() {
         grid: {
           color: "rgba(171,171,171,0.21)",
           display: true,
-        },
-        ticks: {
-          callback: function (value, index, values) {
-            return value;
-          },
         },
       },
       y: {

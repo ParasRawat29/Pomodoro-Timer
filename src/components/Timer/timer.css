@@ -69,11 +69,11 @@
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
 }
-.navLinks a {
+.navLinks a button {
   color: white;
   text-decoration: none;
 }
-.navLinks .active {
+.navLinks a .active {
   color: #64d89c;
 }
 .toggleBtn {
