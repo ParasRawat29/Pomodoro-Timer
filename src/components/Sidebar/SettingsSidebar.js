@@ -1,6 +1,7 @@
 import { React } from "react";
 import "./sidebar.css";
 import close from "../../vector/close.png";
+
 export default function SettingsSidebar(props) {
   var sidebarCss = {
     transform: props.sidebarIsOpen == 1 ? "translateX(0)" : "translateX(100%)",

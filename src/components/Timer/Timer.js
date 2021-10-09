@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import SettingsSidebar from "../Sidebar/SettingsSidebar";
@@ -11,16 +17,16 @@ import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 
 export default function Timer() {
-  const { profiles, isLoading } = useContext(ProfileContext);
+  const { profiles } = useContext(ProfileContext);
   const [navOpen, setNavOpen] = useState(false);
   const location = useLocation();
+  const audioElement = useRef(null);
   var [sessionVal, setSessionVal] = useState("25");
   var [breakVal, setBreakVal] = useState("2");
   var [sessionlenth, setSessionLength] = useState(
     parseInt(sessionVal, 10) * 60
   );
   var [breaklength, setBreakLength] = useState(parseInt(breakVal, 10) * 60);
-
   const [sidebarIsOpen, setSidebarIsOpen] = useState(0);
   var [timeLeft, setTimeLeft] = useState(sessionlenth);
   var [intervalId, setintervalId] = useState(null);
@@ -30,17 +36,20 @@ export default function Timer() {
   var [startTime, setStartTime] = useState(sessionlenth);
   var [isTimerStarted, setisTimerStarted] = useState(false);
 
-  function setTimerTime() {
-    setTimeLeftInMin(() => Math.floor(timeLeft / 60));
-    setTimeLeftInSec(() => timeLeft % 60);
-  }
+  const setTimerTime = useCallback(
+    function setTimerTime() {
+      setTimeLeftInMin(() => Math.floor(timeLeft / 60));
+      setTimeLeftInSec(() => timeLeft % 60);
+    },
+    [timeLeft]
+  );
 
   function startTimer() {
     if (!isTimerStarted) {
       setisTimerStarted(1);
       const intervalId = setInterval(() => {
         setTimeLeft((pre) => pre - 1);
-      }, 1);
+      }, 1000);
       setintervalId(() => intervalId);
     }
   }
@@ -61,32 +70,37 @@ export default function Timer() {
   function toggleSettingSideBar() {
     setSidebarIsOpen((pre) => !pre);
   }
-  const putTodatabase = async (data, day) => {
-    get(child(ref(database), `profiles/${profiles.uid}/data/${day}`))
-      .then(async (snap) => {
-        if (snap.exists()) {
-          const preTime = snap.val().y;
-          const newTime = preTime + data.y;
-          const newdata = {
-            x: data.x,
-            y: newTime,
-          };
 
-          await update(
-            ref(database, `profiles/${profiles.uid}/data/${day}`),
-            newdata
-          );
-        } else {
-          await set(
-            ref(database, `profiles/${profiles.uid}/data/${day}`),
-            data
-          );
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const putTodatabase = useCallback(
+    async (data, day) => {
+      get(child(ref(database), `profiles/${profiles.uid}/data/${day}`))
+        .then(async (snap) => {
+          if (snap.exists()) {
+            const preTime = snap.val().y;
+            const newTime = preTime + data.y;
+            const newdata = {
+              x: data.x,
+              y: newTime,
+            };
+
+            await update(
+              ref(database, `profiles/${profiles.uid}/data/${day}`),
+              newdata
+            );
+          } else {
+            await set(
+              ref(database, `profiles/${profiles.uid}/data/${day}`),
+              data
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    [profiles.uid]
+  );
+
   useEffect(() => {
     setTimerTime();
   }, [timeLeft, sessionlenth, breaklength, sessionVal, breakVal]);
@@ -98,15 +112,25 @@ export default function Timer() {
     setTimeLeftInMin(() => timeLeft / 60);
     setTimeLeftInSec(() => timeLeft % 60);
     setStartTime(() => sessionlenth);
-  }, [, sessionVal, breakVal, sessionlenth]);
+  }, [sessionVal, breakVal, sessionlenth]);
 
   useEffect(() => {
     if (timeLeft == 0) {
       setisTimerStarted(0);
-      const audioEl = document.getElementsByClassName("audio-element")[0];
-      audioEl.play();
+      const playPromise = audioElement.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then((_) => {
+            // Automatic playback started!
+            // Show playing UI.
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
       clearInterval(intervalId);
-      if (timerType == "session") {
+
+      if (timerType === "session") {
         const day = new Date(Date.now()).toLocaleDateString("en-ca");
         const timespent = sessionlenth;
         const data = {
@@ -124,7 +148,7 @@ export default function Timer() {
           .catch((error) => {
             console.log(error);
           });
-      } else if (timerType == "break") {
+      } else if (timerType === "break") {
         setTimerType(() => "session");
         setTimeLeft(() => sessionlenth);
         setStartTime(() => sessionlenth);
@@ -192,12 +216,13 @@ export default function Timer() {
           </button>
         </div>
       </div>
-      <audio className="audio-element">
+      <audio id="beep" ref={audioElement}>
         <source
-          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/
-              build/testable-projects-fcc/audio/BeepSound.wav"
-        ></source>
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+          type="audio/mpeg"
+        />
       </audio>
+
       <div className="navLinkWrapper">
         <ul
           className="navLinks"
