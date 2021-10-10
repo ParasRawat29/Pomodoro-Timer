@@ -48,7 +48,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
       setisTimerStarted(1);
       const intervalId = setInterval(() => {
         setTimeLeft((pre) => pre - 1);
-      }, 1000);
+      }, 1);
       setintervalId(() => intervalId);
     }
   }
@@ -262,7 +262,11 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
           </Link>
         </ul>
         <button className="toggleBtn" onClick={() => setNavOpen((pre) => !pre)}>
-          {navOpen ? <i class="bi bi-x-lg"></i> : <i class="bi bi-list"></i>}
+          {navOpen ? (
+            <i className="bi bi-x-lg"></i>
+          ) : (
+            <i className="bi bi-list"></i>
+          )}
         </button>
       </div>
     </div>

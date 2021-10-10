@@ -10,6 +10,8 @@ export default function Analytics() {
   const { data, isLoading } = useContext(DataTimeContext);
   const [dataInFormOfArray, setDataInFormOfArray] = useState(null);
   const [navOpen, setNavOpen] = useState(false);
+  const [minT, setMinT] = useState(0);
+  const [maxT, setMaxT] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
@@ -25,6 +27,13 @@ export default function Analytics() {
     });
   }, [data]);
 
+  useEffect(() => {
+    if (dataInFormOfArray) {
+      setMaxT(() => dataInFormOfArray.length - 1);
+      setMinT(() => dataInFormOfArray.length - 6);
+    }
+  }, [dataInFormOfArray]);
+
   const dataInChart = {
     datasets: [
       {
@@ -33,7 +42,7 @@ export default function Analytics() {
         fill: false,
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgba(255, 99, 132, 0.2)",
-        borderWidth: 5,
+        borderWidth: 2,
       },
     ],
   };
@@ -57,6 +66,8 @@ export default function Analytics() {
     },
     scales: {
       x: {
+        min: minT ? new Date(dataInFormOfArray[minT].x + "T00:00:00") : null,
+        max: maxT ? new Date(dataInFormOfArray[maxT].x + "T00:00:00") : null,
         type: "time",
         time: {
           unit: "day",
@@ -78,10 +89,45 @@ export default function Analytics() {
       },
     },
   };
+
+  const nextData = (start, end) => {
+    let mint = minT + start;
+    let maxt = maxT + end;
+    if (mint <= 0) {
+      mint = 0;
+      maxt = mint + 5;
+    }
+
+    if (maxt >= dataInFormOfArray.length - 1) {
+      maxt = dataInFormOfArray.length - 1;
+      mint = maxt - 5;
+    }
+    console.log(mint, maxt);
+    setMaxT(maxt);
+    setMinT(mint);
+  };
+
+  const NextBtnStyles = {
+    color: maxT === dataInFormOfArray.length - 1 ? "grey" : "#4dc07d",
+    cursor: maxT === dataInFormOfArray.length - 1 ? "auto" : "pointer",
+  };
+  const PreBtnStyles = {
+    color: minT === 0 ? "grey" : "#4dc07d",
+    cursor: minT === 0 ? "auto" : "pointer",
+  };
   return (
     <div className="AnalyticsWrapper">
       <div className="chartContainer">
         <Bar data={dataInChart} options={options} />
+        <div className="chartNavigationButton">
+          <button onClick={() => nextData(-6, -6)} style={PreBtnStyles}>
+            <i class="bi bi-arrow-left-circle"></i>previous
+          </button>
+          <button onClick={() => nextData(6, 6)} style={NextBtnStyles}>
+            next
+            <i class="bi bi-arrow-right-circle"></i>
+          </button>
+        </div>
       </div>
 
       <div className="navLinkWrapper">
@@ -103,7 +149,11 @@ export default function Analytics() {
           </Link>
         </ul>
         <button className="toggleBtn" onClick={() => setNavOpen((pre) => !pre)}>
-          {navOpen ? <i class="bi bi-x-lg"></i> : <i class="bi bi-list"></i>}
+          {navOpen ? (
+            <i className="bi bi-x-lg"></i>
+          ) : (
+            <i className="bi bi-list"></i>
+          )}
         </button>
       </div>
     </div>
