@@ -8,14 +8,15 @@ import { Link } from "react-router-dom";
 
 export default function Analytics() {
   const { data, isLoading } = useContext(DataTimeContext);
-  const [dataInFormOfArray, setDataInFormOfArray] = useState(null);
+  const [studyDataInFormOfArray, setstudyDataInFormOfArray] = useState(null);
+  const [BreakDataInFormOfArray, setBreakDataInFormOfArray] = useState(null);
   const [navOpen, setNavOpen] = useState(false);
   const [minT, setMinT] = useState(0);
   const [maxT, setMaxT] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
-    setDataInFormOfArray(() => {
+    setstudyDataInFormOfArray(() => {
       return data
         ? Object.keys(data).map((item) => {
             return {
@@ -28,20 +29,40 @@ export default function Analytics() {
   }, [data]);
 
   useEffect(() => {
-    if (dataInFormOfArray) {
-      setMaxT(() => dataInFormOfArray.length - 1);
-      setMinT(() => dataInFormOfArray.length - 6);
+    setBreakDataInFormOfArray(() => {
+      return data
+        ? Object.keys(data).map((item) => {
+            return {
+              x: data[item].x,
+              y: data[item].z / 60,
+            };
+          })
+        : [];
+    });
+  }, [data]);
+
+  useEffect(() => {
+    if (studyDataInFormOfArray) {
+      setMaxT(() => studyDataInFormOfArray.length - 1);
+      setMinT(() => studyDataInFormOfArray.length - 6);
     }
-  }, [dataInFormOfArray]);
+  }, [studyDataInFormOfArray]);
 
   const dataInChart = {
     datasets: [
       {
-        label: "minutes",
-        data: dataInFormOfArray,
-        fill: false,
+        label: "Study Time",
+
+        data: studyDataInFormOfArray,
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgba(255, 99, 132, 0.2)",
+        borderWidth: 2,
+      },
+      {
+        label: "Break Time",
+        data: BreakDataInFormOfArray,
+        backgroundColor: "#2c9da3",
+        borderColor: "rgba(25, 99, 122, 0.2)",
         borderWidth: 2,
       },
     ],
@@ -50,6 +71,14 @@ export default function Analytics() {
   const options = {
     maintainAspectRatio: false,
     plugins: {
+      legend: {
+        labels: {
+          color: "#d4dad6",
+          font: {
+            size: 14,
+          },
+        },
+      },
       tooltip: {
         callbacks: {
           title: (context) => {
@@ -66,12 +95,17 @@ export default function Analytics() {
     },
     scales: {
       x: {
-        min: minT ? new Date(dataInFormOfArray[minT].x + "T00:00:00") : null,
-        max: maxT ? new Date(dataInFormOfArray[maxT].x + "T00:00:00") : null,
+        min: minT
+          ? new Date(studyDataInFormOfArray[minT].x + "T00:00:00")
+          : null,
+        max: maxT
+          ? new Date(studyDataInFormOfArray[maxT].x + "T00:00:00")
+          : null,
         type: "time",
         time: {
           unit: "day",
         },
+
         grid: {
           color: "rgba(171,171,171,0.21)",
           display: true,
@@ -83,6 +117,12 @@ export default function Analytics() {
         },
         ticks: {
           display: "false",
+        },
+        title: {
+          display: true,
+          text: "Time in Minutes",
+          color: "#c3c3c3",
+          fontFamily: "Segoe UI",
         },
 
         beginAtZero: true,
@@ -98,23 +138,32 @@ export default function Analytics() {
       maxt = mint + 5;
     }
 
-    if (maxt >= dataInFormOfArray.length - 1) {
-      maxt = dataInFormOfArray.length - 1;
+    if (maxt >= studyDataInFormOfArray.length - 1) {
+      maxt = studyDataInFormOfArray.length - 1;
       mint = maxt - 5;
     }
-    console.log(mint, maxt);
+
     setMaxT(maxt);
     setMinT(mint);
   };
 
   const NextBtnStyles = {
-    color: maxT === dataInFormOfArray.length - 1 ? "grey" : "#4dc07d",
-    cursor: maxT === dataInFormOfArray.length - 1 ? "auto" : "pointer",
+    color: studyDataInFormOfArray
+      ? maxT === studyDataInFormOfArray.length - 1
+        ? "grey"
+        : "#4dc07d"
+      : null,
+    cursor: studyDataInFormOfArray
+      ? maxT === studyDataInFormOfArray.length - 1
+        ? "auto"
+        : "pointer"
+      : null,
   };
   const PreBtnStyles = {
     color: minT === 0 ? "grey" : "#4dc07d",
     cursor: minT === 0 ? "auto" : "pointer",
   };
+
   return (
     <div className="AnalyticsWrapper">
       <div className="chartContainer">
@@ -134,7 +183,7 @@ export default function Analytics() {
         <ul
           className="navLinks"
           style={{
-            height: `${navOpen ? "100px" : "0px"}`,
+            height: `${navOpen ? "80px" : "0px"}`,
             visibility: `${navOpen ? "visible" : "hidden"}`,
           }}
         >

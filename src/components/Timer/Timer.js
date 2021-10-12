@@ -71,22 +71,43 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
   }
 
   const putTodatabase = useCallback(
-    async (data, day) => {
+    async (data, day, type) => {
       get(child(ref(database), `profiles/${profiles.uid}/data/${day}`))
         .then(async (snap) => {
           if (snap.exists()) {
-            const preTime = snap.val().y;
-            const newTime = preTime + data.y;
-            const newdata = {
-              x: data.x,
-              y: newTime,
-            };
+            //if that day data is already present in database
+            if (type === "session") {
+              const preBreakTime = snap.val().z ? snap.val().z : 0;
+              const preSessionTime = snap.val().y;
+              const newSessionTime = preSessionTime + data.y;
+              const newdata = {
+                x: data.x,
+                y: newSessionTime,
+                z: preBreakTime,
+              };
+              await update(
+                ref(database, `profiles/${profiles.uid}/data/${day}`),
+                newdata
+              );
+            }
+            if (type === "break") {
+              const preSessionTime = snap.val().y ? snap.val().y : 0;
+              const preBreakTime = snap.val().z;
+              const newBreakTime = preBreakTime + data.z;
+              const newdata = {
+                x: data.x,
+                y: preSessionTime,
+                z: newBreakTime,
+              };
 
-            await update(
-              ref(database, `profiles/${profiles.uid}/data/${day}`),
-              newdata
-            );
+              await update(
+                ref(database, `profiles/${profiles.uid}/data/${day}`),
+                newdata
+              );
+            }
           } else {
+            //if the day is not present in the database.
+
             await set(
               ref(database, `profiles/${profiles.uid}/data/${day}`),
               data
@@ -137,9 +158,9 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
           y: timespent,
         };
 
-        putTodatabase(data, day)
+        putTodatabase(data, day, timerType)
           .then(() => {
-            console.log("data putted");
+            console.log("session putted");
             setTimerType(() => "break");
             setTimeLeft(() => breaklength);
             setStartTime(() => breaklength);
@@ -148,9 +169,21 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
             console.log(error);
           });
       } else if (timerType === "break") {
-        setTimerType(() => "session");
-        setTimeLeft(() => sessionlenth);
-        setStartTime(() => sessionlenth);
+        const day = new Date(Date.now()).toLocaleDateString("en-ca");
+        const timespent = breaklength;
+        const data = {
+          x: day,
+          z: timespent,
+        };
+        putTodatabase(data, day, timerType)
+          .then(() => {
+            setTimerType(() => "session");
+            setTimeLeft(() => sessionlenth);
+            setStartTime(() => sessionlenth);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     }
   }, [timeLeft, sessionlenth, breaklength]);
@@ -226,7 +259,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
         <ul
           className="navLinks"
           style={{
-            height: `${navOpen ? "100px" : "0px"}`,
+            height: `${navOpen ? "80px" : "0px"}`,
             visibility: `${navOpen ? "visible" : "hidden"}`,
           }}
         >
