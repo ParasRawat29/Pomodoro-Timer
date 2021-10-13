@@ -14,7 +14,8 @@ export default function Analytics() {
   const [minT, setMinT] = useState(0);
   const [maxT, setMaxT] = useState(0);
   const location = useLocation();
-
+  console.log(studyDataInFormOfArray);
+  console.log("minT: ", minT, ":: maxt", maxT);
   useEffect(() => {
     setstudyDataInFormOfArray(() => {
       return data
@@ -44,9 +45,13 @@ export default function Analytics() {
   useEffect(() => {
     if (studyDataInFormOfArray) {
       setMaxT(() => studyDataInFormOfArray.length - 1);
-      setMinT(() => studyDataInFormOfArray.length - 6);
+      setMinT(() =>
+        studyDataInFormOfArray.length - 6 < 0
+          ? 0
+          : studyDataInFormOfArray.length - 6
+      );
     }
-  }, [studyDataInFormOfArray]);
+  }, [studyDataInFormOfArray, minT]);
 
   const dataInChart = {
     datasets: [
@@ -95,12 +100,6 @@ export default function Analytics() {
     },
     scales: {
       x: {
-        min: minT
-          ? new Date(studyDataInFormOfArray[minT].x + "T00:00:00")
-          : null,
-        max: maxT
-          ? new Date(studyDataInFormOfArray[maxT].x + "T00:00:00")
-          : null,
         type: "time",
         time: {
           unit: "day",
@@ -110,6 +109,14 @@ export default function Analytics() {
           color: "rgba(171,171,171,0.21)",
           display: true,
         },
+        min:
+          minT && studyDataInFormOfArray.length >= 1
+            ? new Date(studyDataInFormOfArray[minT].x + "T00:00:00")
+            : null,
+        max:
+          maxT && studyDataInFormOfArray.length >= 1
+            ? new Date(studyDataInFormOfArray[maxT].x + "T00:00:00")
+            : null,
       },
       y: {
         grid: {
@@ -137,10 +144,10 @@ export default function Analytics() {
       mint = 0;
       maxt = mint + 5;
     }
-
     if (maxt >= studyDataInFormOfArray.length - 1) {
       maxt = studyDataInFormOfArray.length - 1;
-      mint = maxt - 5;
+      if (studyDataInFormOfArray.length < 6) mint = 0;
+      else mint = maxt - 5;
     }
 
     setMaxT(maxt);
@@ -167,16 +174,33 @@ export default function Analytics() {
   return (
     <div className="AnalyticsWrapper">
       <div className="chartContainer">
-        <Bar data={dataInChart} options={options} />
-        <div className="chartNavigationButton">
-          <button onClick={() => nextData(-6, -6)} style={PreBtnStyles}>
-            <i class="bi bi-arrow-left-circle"></i>previous
-          </button>
-          <button onClick={() => nextData(6, 6)} style={NextBtnStyles}>
-            next
-            <i class="bi bi-arrow-right-circle"></i>
-          </button>
-        </div>
+        {isLoading ? (
+          <h1 style={{ color: "whitesmoke", textAlign: "center" }}>
+            Loading ...
+          </h1>
+        ) : studyDataInFormOfArray && studyDataInFormOfArray.length > 0 ? (
+          <>
+            <Bar data={dataInChart} options={options} />
+            <div className="chartNavigationButton">
+              <button onClick={() => nextData(-6, -6)} style={PreBtnStyles}>
+                <i class="bi bi-arrow-left-circle"></i>previous
+              </button>
+              <button onClick={() => nextData(6, 6)} style={NextBtnStyles}>
+                next
+                <i class="bi bi-arrow-right-circle"></i>
+              </button>
+            </div>
+          </>
+        ) : (
+          <h1
+            style={{
+              color: "whitesmoke",
+              textAlign: "center",
+            }}
+          >
+            No Data to Show
+          </h1>
+        )}
       </div>
 
       <div className="navLinkWrapper">

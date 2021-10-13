@@ -104,10 +104,15 @@ button {
   }
   .signedInLinksWrapper {
     display: inline;
-    /* background-color: rgb(220, 246, 105); */
     align-items: center;
     width: fit-content;
     margin-left: auto;
+  }
+  .signoutBtn {
+    margin-top: 7px;
+  }
+  .profilePic {
+    margin-top: -7px;
   }
 }
 @media screen and (max-width: 600px) {
