@@ -14,8 +14,7 @@ export default function Analytics() {
   const [minT, setMinT] = useState(0);
   const [maxT, setMaxT] = useState(0);
   const location = useLocation();
-  console.log(studyDataInFormOfArray);
-  console.log("minT: ", minT, ":: maxt", maxT);
+
   useEffect(() => {
     setstudyDataInFormOfArray(() => {
       return data
@@ -51,7 +50,7 @@ export default function Analytics() {
           : studyDataInFormOfArray.length - 6
       );
     }
-  }, [studyDataInFormOfArray, minT]);
+  }, [studyDataInFormOfArray]);
 
   const dataInChart = {
     datasets: [
@@ -140,14 +139,18 @@ export default function Analytics() {
   const nextData = (start, end) => {
     let mint = minT + start;
     let maxt = maxT + end;
+
     if (mint <= 0) {
       mint = 0;
       maxt = mint + 5;
     }
     if (maxt >= studyDataInFormOfArray.length - 1) {
       maxt = studyDataInFormOfArray.length - 1;
-      if (studyDataInFormOfArray.length < 6) mint = 0;
-      else mint = maxt - 5;
+      mint = maxT - 5;
+      if (mint < 0) {
+        console.log("cahla");
+        mint = 0;
+      }
     }
 
     setMaxT(maxt);
