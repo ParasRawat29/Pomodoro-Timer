@@ -3,15 +3,14 @@ import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { useLocation } from "react-router";
+import noProfilePic from "../../vector/noProfilePic.png";
 
-function SignedInLinks({ isTimerStarted }) {
+function SignedInLinks({ isTimerStarted, profiles }) {
   const location = useLocation();
 
   const handleSignOut = () => {
     signOut(auth)
-      .then(() => {
-        console.log("signed out");
-      })
+      .then(() => {})
       .catch((error) => {
         console.log(error);
       });
@@ -43,6 +42,13 @@ function SignedInLinks({ isTimerStarted }) {
           </button>
         </Link>
       </div>
+      <img
+        src={profiles.photoUrl ? profiles.photoUrl : noProfilePic}
+        alt=""
+        width="40px"
+        height="40px"
+        className="profilePic"
+      />
       <button className="signoutBtn" onClick={handleSignOut}>
         Logout
       </button>

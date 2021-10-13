@@ -40,10 +40,16 @@ function LoginPage() {
   };
 
   const DemoSignIn = () => {
+    setDetails(() => {
+      return {
+        email: "test123@gmail.com",
+        password: "123456",
+      };
+    });
     signInWithEmailAndPassword(auth, "test123@gmail.com", "123456")
       .then((userCredential) => {
         // let user = userCredential.user;
-        console.log("signed in");
+
         setDetails(() => {
           return {
             email: "",

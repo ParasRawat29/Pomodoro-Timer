@@ -10,13 +10,13 @@ export function ProfileProvider({ children }) {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // console.log("user", user);
         const userRef = ref(database, "profiles/" + user.uid + "/");
         onValue(userRef, (snap) => {
           const data = {
             ...snap.val(),
             uid: user.uid,
             email: user.email,
+            photoUrl: user.photoURL,
           };
           setProfiles(() => data);
           setIsLoading(false);
