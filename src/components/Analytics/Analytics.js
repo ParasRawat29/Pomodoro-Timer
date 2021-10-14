@@ -148,7 +148,6 @@ export default function Analytics() {
       maxt = studyDataInFormOfArray.length - 1;
       mint = maxT - 5;
       if (mint < 0) {
-        console.log("cahla");
         mint = 0;
       }
     }

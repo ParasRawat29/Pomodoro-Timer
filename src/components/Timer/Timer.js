@@ -42,6 +42,9 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
     },
     [timeLeft]
   );
+  const changeTitle = useCallback((text) => {
+    document.title = text;
+  }, []);
 
   function startTimer() {
     if (!isTimerStarted) {
@@ -49,6 +52,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
       const intervalId = setInterval(() => {
         setTimeLeft((pre) => pre - 1);
       }, 1);
+      changeTitle("PomoTime");
       setintervalId(() => intervalId);
     }
   }
@@ -57,6 +61,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
     setisTimerStarted(0);
     clearInterval(intervalId);
     setTimeLeft(() => sessionlenth);
+    changeTitle("PomoTime");
   }
 
   function pauseTimer() {
@@ -89,10 +94,9 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
                 ref(database, `profiles/${profiles.uid}/data/${day}`),
                 newdata
               );
-            }
-            if (type === "break") {
+            } else if (type === "break") {
               const preSessionTime = snap.val().y ? snap.val().y : 0;
-              const preBreakTime = snap.val().z;
+              const preBreakTime = snap.val().z ? snap.val().z : 0;
               const newBreakTime = preBreakTime + data.z;
               const newdata = {
                 x: data.x,
@@ -126,13 +130,29 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
   }, [timeLeft, sessionlenth, breaklength, sessionVal, breakVal]);
 
   useEffect(() => {
+    if (isTimerStarted) {
+      changeTitle(
+        `${timeLeftInMin < 10 ? "0" + timeLeftInMin : timeLeftInMin}:${
+          timeLeftInSec < 10 ? "0" + timeLeftInSec : timeLeftInSec
+        }`
+      );
+    } else {
+      changeTitle("PomoTime");
+    }
+  }, [timeLeftInMin, timeLeftInSec]);
+
+  useEffect(() => {
     setSessionLength(() => parseInt(sessionVal, 10) * 60);
     setBreakLength(() => parseInt(breakVal, 10) * 60);
-    setTimeLeft(() => sessionlenth);
+    setTimeLeft(() => {
+      return timerType == "session" ? sessionlenth : breaklength;
+    });
     setTimeLeftInMin(() => timeLeft / 60);
     setTimeLeftInSec(() => timeLeft % 60);
-    setStartTime(() => sessionlenth);
-  }, [sessionVal, breakVal, sessionlenth]);
+    setStartTime(() => {
+      return timerType == "session" ? sessionlenth : breaklength;
+    });
+  }, [sessionVal, breakVal, sessionlenth, breaklength]);
 
   useEffect(() => {
     if (timeLeft == 0) {
