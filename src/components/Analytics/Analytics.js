@@ -13,6 +13,7 @@ export default function Analytics() {
   const [navOpen, setNavOpen] = useState(false);
   const [minT, setMinT] = useState(0);
   const [maxT, setMaxT] = useState(0);
+
   const location = useLocation();
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export default function Analytics() {
   const dataInChart = {
     datasets: [
       {
-        label: "Study Time",
+        label: "Study Time (minutes)",
 
         data: studyDataInFormOfArray,
         backgroundColor: "rgb(255, 99, 132)",
@@ -63,7 +64,7 @@ export default function Analytics() {
         borderWidth: 2,
       },
       {
-        label: "Break Time",
+        label: "Break Time (minutes)",
         data: BreakDataInFormOfArray,
         backgroundColor: "#2c9da3",
         borderColor: "rgba(25, 99, 122, 0.2)",

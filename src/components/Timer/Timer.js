@@ -51,7 +51,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
       setisTimerStarted(1);
       const intervalId = setInterval(() => {
         setTimeLeft((pre) => pre - 1);
-      }, 1);
+      }, 1000);
       changeTitle("PomoTime");
       setintervalId(() => intervalId);
     }
@@ -180,7 +180,6 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
 
         putTodatabase(data, day, timerType)
           .then(() => {
-            console.log("session putted");
             setTimerType(() => "break");
             setTimeLeft(() => breaklength);
             setStartTime(() => breaklength);

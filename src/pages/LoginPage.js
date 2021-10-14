@@ -18,10 +18,7 @@ function LoginPage() {
   const signInWithProvider = async (provider) => {
     try {
       const credential = await signInWithPopup(auth, provider);
-      console.log("credential", credential);
       const userMeta = getAdditionalUserInfo(credential);
-      console.log("Success");
-      console.log(userMeta);
       if (userMeta.isNewUser) {
         await set(ref(database, `/profiles/${credential.user.uid}`), {
           name: credential.user.displayName,
