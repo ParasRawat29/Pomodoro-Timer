@@ -140,13 +140,13 @@ export default function Analytics() {
     let mint = minT + start;
     let maxt = maxT + end;
 
-    if (mint <= 0) {
+    if (mint < 0) {
       mint = 0;
       maxt = mint + 5;
     }
     if (maxt >= studyDataInFormOfArray.length - 1) {
       maxt = studyDataInFormOfArray.length - 1;
-      mint = maxT - 5;
+      mint = maxt - 5;
       if (mint < 0) {
         mint = 0;
       }
