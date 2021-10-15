@@ -49,7 +49,11 @@ function SignedInLinks({ isTimerStarted, profiles }) {
         height="40px"
         className="profilePic"
       />
-      <button className="signoutBtn" onClick={handleSignOut}>
+      <button
+        className="signoutBtn"
+        onClick={handleSignOut}
+        disabled={isTimerStarted}
+      >
         Logout
       </button>
     </div>

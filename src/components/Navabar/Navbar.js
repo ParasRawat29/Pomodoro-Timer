@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { ProfileContext } from "../context/profile.context";
-import SignedInLinks from "../Layout/SignedInLinks";
-import SignedOutLinks from "../Layout/SignedOutLinks";
+import { ProfileContext } from "../../context/profile.context";
+import SignedInLinks from "./SignedInLinks";
+import SignedOutLinks from "./SignedOutLinks";
 import PomoTime from "../../vector/PomoTime.png";
 import "./navbar.css";
 

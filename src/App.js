@@ -7,8 +7,8 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
-import { ProfileProvider } from "./components/context/profile.context";
-import { DataTimeProvider } from "./components/context/dataTime.context";
+import { ProfileProvider } from "./context/profile.context";
+import { DataTimeProvider } from "./context/dataTime.context";
 import { useState } from "react";
 
 function App() {

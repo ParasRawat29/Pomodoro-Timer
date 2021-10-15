@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, database } from "../../config/firebase";
+import { auth, database } from "../config/firebase";
 import { onValue, ref } from "@firebase/database";
 const DataTimeContext = createContext();
 

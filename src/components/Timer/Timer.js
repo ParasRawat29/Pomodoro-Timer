@@ -12,7 +12,7 @@ import settingIcon from "../../vector/settings.png";
 import "./timer.css";
 import { database } from "../../config/firebase";
 import { set, ref, update, child, get } from "firebase/database";
-import { ProfileContext } from "../context/profile.context";
+import { ProfileContext } from "../../context/profile.context";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 

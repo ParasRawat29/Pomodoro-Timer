@@ -29,7 +29,7 @@ function SignUpPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(details);
+
     createUserWithEmailAndPassword(auth, details.email, details.password)
       .then((credential) => {
         const userMeta = getAdditionalUserInfo(credential);

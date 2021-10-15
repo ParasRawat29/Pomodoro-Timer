@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 import "./analytics.css";
-import { DataTimeContext } from "../context/dataTime.context";
+import { DataTimeContext } from "../../context/dataTime.context";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 
