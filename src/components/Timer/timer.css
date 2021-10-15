@@ -16,6 +16,7 @@
 .timertype {
   color: aliceblue;
 }
+
 .timebtnContainer button {
   margin: 1rem 1rem;
   background-color: #ff8933;
@@ -26,8 +27,15 @@
   font-size: 1.5rem;
   padding: 3px 10px;
   border-radius: 5px;
+  box-shadow: 0 7px rgba(136, 136, 136, 0.815);
 }
-
+.timebtnContainer .timebtn:hover {
+  background-color: #ff7615;
+}
+.timebtnContainer .timebtn:active {
+  box-shadow: 0 1px rgba(136, 136, 136, 0.515);
+  transform: translateY(4px);
+}
 .timeLeft {
   color: #ffffff;
 }

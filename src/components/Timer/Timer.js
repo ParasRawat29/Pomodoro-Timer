@@ -46,7 +46,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
     document.title = text;
   }, []);
 
-  function startTimer() {
+  const startTimer = useCallback(() => {
     if (!isTimerStarted) {
       setisTimerStarted(1);
       const intervalId = setInterval(() => {
@@ -55,14 +55,14 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
       changeTitle("PomoTime");
       setintervalId(() => intervalId);
     }
-  }
+  }, [changeTitle, isTimerStarted, setisTimerStarted]);
 
-  function resetTimer() {
+  const resetTimer = useCallback(() => {
     setisTimerStarted(0);
     clearInterval(intervalId);
     setTimeLeft(() => sessionlenth);
     changeTitle("PomoTime");
-  }
+  }, [changeTitle, intervalId, sessionlenth, setisTimerStarted]);
 
   function pauseTimer() {
     if (isTimerStarted) {
@@ -71,9 +71,10 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
       intervalId = 0;
     }
   }
-  function toggleSettingSideBar() {
+
+  const toggleSettingSideBar = useCallback(() => {
     setSidebarIsOpen((pre) => !pre);
-  }
+  }, []);
 
   const putTodatabase = useCallback(
     async (data, day, type) => {
@@ -243,6 +244,14 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
         </div>
         <div className="timebtnContainer">
           <button
+            style={
+              isTimerStarted
+                ? {
+                    boxShadow: "0 1px rgba(136, 136, 136, 0.515)",
+                    transform: "translateY(4px)",
+                  }
+                : {}
+            }
             type="button"
             className="timebtn"
             onClick={() => {
