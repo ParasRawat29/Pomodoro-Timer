@@ -21,19 +21,21 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
   const [navOpen, setNavOpen] = useState(false);
   const location = useLocation();
   const audioElement = useRef(null);
-  var [sessionVal, setSessionVal] = useState("25");
-  var [breakVal, setBreakVal] = useState("2");
-  var [sessionlenth, setSessionLength] = useState(
-    parseInt(sessionVal, 10) * 60
-  );
-  var [breaklength, setBreakLength] = useState(parseInt(breakVal, 10) * 60);
+  const [timerVal, setTimerVal] = useState({
+    sessionVal: "25",
+    breakVal: "2",
+  });
+  const [timerLength, setTimerLength] = useState({
+    sessionlenth: parseInt(timerVal.sessionVal, 10) * 60,
+    breaklength: parseInt(timerVal.breakVal, 10) * 60,
+  });
   const [sidebarIsOpen, setSidebarIsOpen] = useState(0);
-  var [timeLeft, setTimeLeft] = useState(sessionlenth);
+  var [timeLeft, setTimeLeft] = useState(timerLength.sessionlenth);
   var [intervalId, setintervalId] = useState(null);
   var [timeLeftInMin, setTimeLeftInMin] = useState(timeLeft / 60);
   var [timeLeftInSec, setTimeLeftInSec] = useState(timeLeft % 60);
   var [timerType, setTimerType] = useState("session");
-  var [startTime, setStartTime] = useState(sessionlenth);
+  var [startTime, setStartTime] = useState(timerLength.sessionlenth);
 
   const setTimerTime = useCallback(
     function setTimerTime() {
@@ -51,18 +53,27 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
       setisTimerStarted(1);
       const intervalId = setInterval(() => {
         setTimeLeft((pre) => pre - 1);
-      }, 1000);
+      }, 1);
       changeTitle("PomoTime");
       setintervalId(() => intervalId);
     }
   }, [changeTitle, isTimerStarted, setisTimerStarted]);
 
   const resetTimer = useCallback(() => {
-    setisTimerStarted(0);
-    clearInterval(intervalId);
-    setTimeLeft(() => sessionlenth);
-    changeTitle("PomoTime");
-  }, [changeTitle, intervalId, sessionlenth, setisTimerStarted]);
+    if (timerType === "session") {
+      setisTimerStarted(0);
+      clearInterval(intervalId);
+      setTimeLeft(() => timerLength.sessionlenth);
+      changeTitle("PomoTime");
+    } else {
+      setisTimerStarted(0);
+      clearInterval(intervalId);
+      setTimerType("session");
+      setTimeLeft(() => timerLength.sessionlenth);
+      setStartTime(() => timerLength.sessionlenth);
+      changeTitle("PomoTime");
+    }
+  }, [changeTitle, intervalId, timerLength.sessionlenth, setisTimerStarted]);
 
   function pauseTimer() {
     if (isTimerStarted) {
@@ -128,7 +139,13 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
 
   useEffect(() => {
     setTimerTime();
-  }, [timeLeft, sessionlenth, breaklength, sessionVal, breakVal]);
+  }, [
+    timeLeft,
+    timerLength.sessionlenth,
+    timerLength.breaklength,
+    timerVal.sessionVal,
+    timerVal.breakVal,
+  ]);
 
   useEffect(() => {
     if (isTimerStarted) {
@@ -143,27 +160,42 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
   }, [timeLeftInMin, timeLeftInSec]);
 
   useEffect(() => {
-    setSessionLength(() => parseInt(sessionVal, 10) * 60);
-    setBreakLength(() => parseInt(breakVal, 10) * 60);
+    setTimerLength((pre) => {
+      return {
+        ...pre,
+        sessionlenth: parseInt(timerVal.sessionVal, 10) * 60,
+        breaklength: parseInt(timerVal.breakVal, 10) * 60,
+      };
+    });
+    // setSessionLength(() => parseInt(timerVal.sessionVal, 10) * 60);
+    // setBreakLength(() => parseInt(timerVal.breakVal, 10) * 60);
     setTimeLeft(() => {
-      return timerType == "session" ? sessionlenth : breaklength;
+      return timerType === "session"
+        ? timerLength.sessionlenth
+        : timerLength.breaklength;
     });
     setTimeLeftInMin(() => timeLeft / 60);
     setTimeLeftInSec(() => timeLeft % 60);
     setStartTime(() => {
-      return timerType == "session" ? sessionlenth : breaklength;
+      return timerType === "session"
+        ? timerLength.sessionlenth
+        : timerLength.breaklength;
     });
-  }, [sessionVal, breakVal, sessionlenth, breaklength]);
+  }, [
+    timerVal.sessionVal,
+    timerVal.breakVal,
+    timerLength.sessionlenth,
+    timerLength.breaklength,
+  ]);
 
   useEffect(() => {
-    if (timeLeft == 0) {
+    if (timeLeft === 0) {
       setisTimerStarted(0);
       const playPromise = audioElement.current.play();
       if (playPromise !== undefined) {
         playPromise
           .then((_) => {
-            // Automatic playback started!
-            // Show playing UI.
+            //beep sound started
           })
           .catch((error) => {
             console.log(error);
@@ -173,7 +205,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
 
       if (timerType === "session") {
         const day = new Date(Date.now()).toLocaleDateString("en-ca");
-        const timespent = sessionlenth;
+        const timespent = timerLength.sessionlenth;
         const data = {
           x: day,
           y: timespent,
@@ -182,15 +214,15 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
         putTodatabase(data, day, timerType)
           .then(() => {
             setTimerType(() => "break");
-            setTimeLeft(() => breaklength);
-            setStartTime(() => breaklength);
+            setTimeLeft(() => timerLength.breaklength);
+            setStartTime(() => timerLength.breaklength);
           })
           .catch((error) => {
             console.log(error);
           });
       } else if (timerType === "break") {
         const day = new Date(Date.now()).toLocaleDateString("en-ca");
-        const timespent = breaklength;
+        const timespent = timerLength.breaklength;
         const data = {
           x: day,
           z: timespent,
@@ -198,25 +230,24 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
         putTodatabase(data, day, timerType)
           .then(() => {
             setTimerType(() => "session");
-            setTimeLeft(() => sessionlenth);
-            setStartTime(() => sessionlenth);
+            setTimeLeft(() => timerLength.sessionlenth);
+            setStartTime(() => timerLength.sessionlenth);
           })
           .catch((error) => {
             console.log(error);
           });
       }
     }
-  }, [timeLeft, sessionlenth, breaklength]);
+  }, [timeLeft, timerLength.sessionlenth, timerLength.breaklength]);
 
   return (
     <div className="timerComponentWrapper">
       <SettingsSidebar
         toggleSettingSideBar={toggleSettingSideBar}
         sidebarIsOpen={sidebarIsOpen}
-        setSessionVal={setSessionVal}
-        setBreakVal={setBreakVal}
-        sessionVal={sessionVal}
-        breakVal={breakVal}
+        setTimerVal={setTimerVal}
+        sessionVal={timerVal.sessionVal}
+        breakVal={timerVal.breakVal}
         isTimerStarted={isTimerStarted}
       />
       <button
@@ -247,7 +278,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
             style={
               isTimerStarted
                 ? {
-                    boxShadow: "0 1px rgba(136, 136, 136, 0.515)",
+                    boxShadow: "0 1px rgba(253, 253, 253, 0.919)",
                     transform: "translateY(4px)",
                   }
                 : {}
@@ -272,7 +303,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
             className="timebtn"
             onClick={() => resetTimer()}
           >
-            Reset
+            {timerType == "session" ? "Reset" : "Skip"}
           </button>
         </div>
       </div>

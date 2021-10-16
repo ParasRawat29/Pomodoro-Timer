@@ -22,7 +22,15 @@ export default function SettingsSidebar(props) {
             type="number"
             min="1"
             max="90"
-            onChange={(e) => props.setSessionVal(e.target.value)}
+            onChange={(e) =>
+              props.setTimerVal((pre) => {
+                return {
+                  ...pre,
+                  sessionVal: e.target.value,
+                };
+                // sessionVal:e.target.value ,
+              })
+            }
             disabled={props.isTimerStarted}
           />
         </div>
@@ -33,7 +41,15 @@ export default function SettingsSidebar(props) {
             type="number"
             min="1"
             max="30"
-            onChange={(e) => props.setBreakVal(e.target.value)}
+            onChange={(e) =>
+              props.setTimerVal((pre) => {
+                return {
+                  ...pre,
+                  breakVal: e.target.value,
+                };
+                // sessionVal:e.target.value ,
+              })
+            }
             disabled={props.isTimerStarted}
           />
         </div>
