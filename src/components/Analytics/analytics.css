@@ -91,4 +91,7 @@
   .navLinkWrapper {
     display: block;
   }
+  .chartContainer {
+    height: 400px;
+  }
 }

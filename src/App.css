@@ -28,6 +28,6 @@ input:disabled {
   height: max-content;
   margin: auto;
   text-align: center;
-  background-color: var(--darkbackground);
-  height: 100vh;
+  background-color: #1a1a1d;
+  height: 100%;
 }
