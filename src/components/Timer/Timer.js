@@ -59,12 +59,28 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
     }
   }, [changeTitle, isTimerStarted, setisTimerStarted]);
 
-  const resetTimer = useCallback(() => {
+  const resetTimer = () => {
     if (timerType === "session") {
       setisTimerStarted(0);
+      // console.log(
+      //   timeLeft <= 0.6 * parseInt(timerVal.sessionVal, 10) * 60,
+      //   timeLeft,
+      //   parseInt(timerVal.sessionVal, 10) * 60
+      // );
       clearInterval(intervalId);
-      setTimeLeft(() => timerLength.sessionlenth);
       changeTitle("PomoTime");
+      if (timeLeft <= 0.6 * parseInt(timerVal.sessionVal, 10) * 60) {
+        const day = new Date(Date.now()).toLocaleDateString("en-ca");
+        const timespent = timeLeft;
+        const data = {
+          x: day,
+          y: timespent,
+        };
+        putTodatabase(data, day, timerType).then(() => {});
+      } else {
+        alert("time less than 60% of what you set . it wont be considered");
+      }
+      setTimeLeft(() => timerLength.sessionlenth);
     } else {
       setisTimerStarted(0);
       clearInterval(intervalId);
@@ -73,7 +89,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
       setStartTime(() => timerLength.sessionlenth);
       changeTitle("PomoTime");
     }
-  }, [changeTitle, intervalId, timerLength.sessionlenth, setisTimerStarted]);
+  };
 
   function pauseTimer() {
     if (isTimerStarted) {
