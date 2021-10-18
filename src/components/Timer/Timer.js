@@ -200,7 +200,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
   ]);
 
   useEffect(() => {
-    if (timeLeft === 0) {
+    if (timeLeft <= 0 && isTimerStarted) {
       setisTimerStarted(0);
       const playPromise = audioElement.current.play();
       if (playPromise !== undefined) {

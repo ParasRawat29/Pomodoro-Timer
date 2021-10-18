@@ -26,9 +26,8 @@ export default function SettingsSidebar(props) {
               props.setTimerVal((pre) => {
                 return {
                   ...pre,
-                  sessionVal: e.target.value,
+                  sessionVal: e.target.value > 90 ? 90 : e.target.value,
                 };
-                // sessionVal:e.target.value ,
               })
             }
             disabled={props.isTimerStarted}
@@ -37,7 +36,6 @@ export default function SettingsSidebar(props) {
         <div className="inputDiv">
           <label>Break</label>
           <input
-            value={props.breakVal}
             type="number"
             min="1"
             max="30"
@@ -45,11 +43,11 @@ export default function SettingsSidebar(props) {
               props.setTimerVal((pre) => {
                 return {
                   ...pre,
-                  breakVal: e.target.value,
+                  breakVal: e.target.value > 30 ? 30 : e.target.value,
                 };
-                // sessionVal:e.target.value ,
               })
             }
+            value={props.breakVal}
             disabled={props.isTimerStarted}
           />
         </div>
