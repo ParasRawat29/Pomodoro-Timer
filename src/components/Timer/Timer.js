@@ -53,7 +53,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
       setisTimerStarted(1);
       const intervalId = setInterval(() => {
         setTimeLeft((pre) => pre - 1);
-      }, 1);
+      }, 1000);
       changeTitle("PomoTime");
       setintervalId(() => intervalId);
     }
@@ -62,11 +62,6 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
   const resetTimer = () => {
     if (timerType === "session") {
       setisTimerStarted(0);
-      // console.log(
-      //   timeLeft <= 0.6 * parseInt(timerVal.sessionVal, 10) * 60,
-      //   timeLeft,
-      //   parseInt(timerVal.sessionVal, 10) * 60
-      // );
       clearInterval(intervalId);
       changeTitle("PomoTime");
       if (timeLeft <= 0.6 * parseInt(timerVal.sessionVal, 10) * 60) {

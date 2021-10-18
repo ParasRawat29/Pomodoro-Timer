@@ -55,7 +55,7 @@
 .timerComponentWrapper {
   width: 100%;
   position: absolute;
-  height: 90vh;
+  height: 100%;
   background-color: #1a1a1d;
   overflow: hidden;
 }
