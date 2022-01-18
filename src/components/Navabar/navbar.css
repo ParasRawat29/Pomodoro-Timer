@@ -8,8 +8,10 @@
   background-color: #1a1a1d;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 3px;
   border-bottom: 1px solid rgb(153, 150, 150);
+  height: 60px;
 }
 button {
   outline: 0;

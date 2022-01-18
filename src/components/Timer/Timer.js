@@ -15,6 +15,7 @@ import { set, ref, update, child, get } from "firebase/database";
 import { ProfileContext } from "../../context/profile.context";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import Todo from "../TODO/Todo";
 
 export default function Timer({ isTimerStarted, setisTimerStarted }) {
   const { profiles } = useContext(ProfileContext);
@@ -36,6 +37,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
   var [timeLeftInSec, setTimeLeftInSec] = useState(timeLeft % 60);
   var [timerType, setTimerType] = useState("session");
   var [startTime, setStartTime] = useState(timerLength.sessionlenth);
+  const [todoIsOpen, setTodoIsOpen] = useState(0);
 
   const setTimerTime = useCallback(
     function setTimerTime() {
@@ -53,7 +55,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
       setisTimerStarted(1);
       const intervalId = setInterval(() => {
         setTimeLeft((pre) => pre - 1);
-      }, 1000);
+      }, 10);
       changeTitle("PomoTime");
       setintervalId(() => intervalId);
     }
@@ -178,8 +180,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
         breaklength: parseInt(timerVal.breakVal, 10) * 60,
       };
     });
-    // setSessionLength(() => parseInt(timerVal.sessionVal, 10) * 60);
-    // setBreakLength(() => parseInt(timerVal.breakVal, 10) * 60);
+
     setTimeLeft(() => {
       return timerType === "session"
         ? timerLength.sessionlenth
@@ -222,7 +223,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
           y: timespent,
         };
 
-        putTodatabase(data, day, timerType)
+        putTodatabase(data, "2021-11-23", timerType)
           .then(() => {
             setTimerType(() => "break");
             setTimeLeft(() => timerLength.breaklength);
@@ -238,7 +239,7 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
           x: day,
           z: timespent,
         };
-        putTodatabase(data, day, timerType)
+        putTodatabase(data, "2021-11-23", timerType)
           .then(() => {
             setTimerType(() => "session");
             setTimeLeft(() => timerLength.sessionlenth);
@@ -252,125 +253,141 @@ export default function Timer({ isTimerStarted, setisTimerStarted }) {
   }, [timeLeft, timerLength.sessionlenth, timerLength.breaklength]);
 
   return (
-    <div className="timerComponentWrapper">
-      <SettingsSidebar
-        toggleSettingSideBar={toggleSettingSideBar}
-        sidebarIsOpen={sidebarIsOpen}
-        setTimerVal={setTimerVal}
-        sessionVal={timerVal.sessionVal}
-        breakVal={timerVal.breakVal}
-        isTimerStarted={isTimerStarted}
-      />
-      <button
-        className="settingBtn"
-        onClick={() => {
-          setSidebarIsOpen((pre) => !pre);
-        }}
-      >
-        <img src={settingIcon} alt="" />
-      </button>
-      <div className="TimerContainer">
-        <h2 className="timertype">{timerType}</h2>
-        <div className="circularProgressContainer">
-          <CircularProgressbar //see the library here: https://www.npmjs.com/package/react-circular-progressbar
-            maxValue={startTime}
-            value={startTime - timeLeft}
-            styles={{
-              root: { width: "100%", minWidth: "300px", maxWidth: "450px" },
-            }}
-            text={`${
-              timeLeftInMin < 10 ? "0" + timeLeftInMin : timeLeftInMin
-            } : 
-                ${timeLeftInSec < 10 ? "0" + timeLeftInSec : timeLeftInSec}`}
-          />
-        </div>
-        <div className="timebtnContainer">
-          <button
-            style={
-              isTimerStarted
-                ? {
-                    boxShadow: "0 1px rgba(253, 253, 253, 0.919)",
-                    transform: "translateY(4px)",
-                  }
-                : {}
-            }
-            type="button"
-            className="timebtn"
-            onClick={() => {
-              startTimer();
-            }}
-          >
-            Start
-          </button>
-          <button
-            type="button"
-            className="timebtn"
-            onClick={() => pauseTimer()}
-          >
-            Pause
-          </button>
-          <button
-            type="button"
-            className="timebtn"
-            onClick={() => resetTimer()}
-          >
-            {timerType == "session" ? "Reset" : "Skip"}
-          </button>
-        </div>
-      </div>
-      <audio id="beep" ref={audioElement}>
-        <source
-          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
-          type="audio/mpeg"
+    <div className="wrapper">
+      <Todo todoIsOpen={todoIsOpen} setTodoIsOpen={setTodoIsOpen} />
+      <div className="timerComponentWrapper">
+        <SettingsSidebar
+          toggleSettingSideBar={toggleSettingSideBar}
+          sidebarIsOpen={sidebarIsOpen}
+          setTimerVal={setTimerVal}
+          sessionVal={timerVal.sessionVal}
+          breakVal={timerVal.breakVal}
+          isTimerStarted={isTimerStarted}
         />
-      </audio>
 
-      <div className="navLinkWrapper">
-        <ul
-          className="navLinks"
-          style={{
-            height: `${navOpen ? "80px" : "0px"}`,
-            visibility: `${navOpen ? "visible" : "hidden"}`,
+        <button
+          className="settingBtn"
+          onClick={() => {
+            setSidebarIsOpen((pre) => !pre);
           }}
         >
-          <Link to={`${isTimerStarted ? "" : "/"}`}>
-            <button
-              className={location.pathname == "/" ? "active" : ""}
-              style={{
-                outline: "none",
-                backgroundColor: "inherit",
-              }}
-              disabled={isTimerStarted}
-            >
-              Timer
-            </button>
-          </Link>
-
-          <Link
-            to={`${isTimerStarted ? "" : "/analytics"}`}
-            disabled={isTimerStarted}
-          >
-            <button
-              className={
-                location.pathname.includes("/analytics") ? "active" : ""
-              }
-              style={{
-                outline: "none",
-                backgroundColor: "inherit",
-              }}
-              disabled={isTimerStarted}
-            >
-              Analytics
-            </button>
-          </Link>
-        </ul>
-        <button className="toggleBtn" onClick={() => setNavOpen((pre) => !pre)}>
-          {navOpen ? (
-            <i className="bi bi-x-lg"></i>
-          ) : (
-            <i className="bi bi-list"></i>
-          )}
+          <img src={settingIcon} alt="" />
         </button>
+
+        <button
+          className="todoToggleBtn"
+          onClick={() => {
+            setTodoIsOpen((pre) => !pre);
+          }}
+        >
+          <i class="bi bi-list"></i>
+        </button>
+        <div className="TimerContainer">
+          <h2 className="timertype">{timerType}</h2>
+          <div className="circularProgressContainer">
+            <CircularProgressbar //see the library here: https://www.npmjs.com/package/react-circular-progressbar
+              maxValue={startTime}
+              value={startTime - timeLeft}
+              styles={{
+                root: { width: "100%", minWidth: "300px", maxWidth: "450px" },
+              }}
+              text={`${
+                timeLeftInMin < 10 ? "0" + timeLeftInMin : timeLeftInMin
+              } : 
+                ${timeLeftInSec < 10 ? "0" + timeLeftInSec : timeLeftInSec}`}
+            />
+          </div>
+          <div className="timebtnContainer">
+            <button
+              style={
+                isTimerStarted
+                  ? {
+                      boxShadow: "0 1px rgba(253, 253, 253, 0.919)",
+                      transform: "translateY(4px)",
+                    }
+                  : {}
+              }
+              type="button"
+              className="timebtn"
+              onClick={() => {
+                startTimer();
+              }}
+            >
+              Start
+            </button>
+            <button
+              type="button"
+              className="timebtn"
+              onClick={() => pauseTimer()}
+            >
+              Pause
+            </button>
+            <button
+              type="button"
+              className="timebtn"
+              onClick={() => resetTimer()}
+            >
+              {timerType == "session" ? "Reset" : "Skip"}
+            </button>
+          </div>
+        </div>
+        <audio id="beep" ref={audioElement}>
+          <source
+            src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+            type="audio/mpeg"
+          />
+        </audio>
+
+        <div className="navLinkWrapper">
+          <ul
+            className="navLinks"
+            style={{
+              height: `${navOpen ? "80px" : "0px"}`,
+              visibility: `${navOpen ? "visible" : "hidden"}`,
+            }}
+          >
+            <Link to={`${isTimerStarted ? "" : "/"}`}>
+              <button
+                className={location.pathname == "/" ? "active" : ""}
+                style={{
+                  outline: "none",
+                  backgroundColor: "inherit",
+                }}
+                disabled={isTimerStarted}
+              >
+                Timer
+              </button>
+            </Link>
+
+            <Link
+              to={`${isTimerStarted ? "" : "/analytics"}`}
+              disabled={isTimerStarted}
+            >
+              <button
+                className={
+                  location.pathname.includes("/analytics") ? "active" : ""
+                }
+                style={{
+                  outline: "none",
+                  backgroundColor: "inherit",
+                }}
+                disabled={isTimerStarted}
+              >
+                Analytics
+              </button>
+            </Link>
+          </ul>
+          <button
+            className="toggleBtn"
+            onClick={() => setNavOpen((pre) => !pre)}
+          >
+            {navOpen ? (
+              <i className="bi bi-x-lg"></i>
+            ) : (
+              <i className="bi bi-list"></i>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -27,12 +27,10 @@ function App() {
               <SignUpPage />
             </PublicRoute>
             <PrivateRoute path="/" exact>
-              <div class="mainContainer">
-                <Timer
-                  isTimerStarted={isTimerStarted}
-                  setisTimerStarted={setisTimerStarted}
-                />
-              </div>
+              <Timer
+                isTimerStarted={isTimerStarted}
+                setisTimerStarted={setisTimerStarted}
+              />
             </PrivateRoute>
             <PrivateRoute path="/analytics">
               <Analytics />

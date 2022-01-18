@@ -1,6 +1,6 @@
 .AnalyticsWrapper {
   background-color: #1a1a1d;
-  height: 100vh;
+  height: calc(100vh - 60px);
 }
 .chartContainer {
   width: 70%;
@@ -34,8 +34,8 @@
 }
 
 .navLinkWrapper {
-  position: absolute;
-  bottom: 0;
+  position: fixed;
+  bottom: 1rem;
   right: 2px;
   display: none;
   text-align: center;

@@ -45,12 +45,14 @@
 .signup-form .row div:last-child {
   padding-left: 10px;
 }
-.signup-form .btn {
+.signup-form .loginBtn {
   font-size: 16px;
   font-weight: bold;
   background: #3598dc;
   border: none;
-  min-width: 140px;
+  width: 100%;
+  margin: auto;
+  padding: 5px;
 }
 .signup-form .btn:hover,
 .signup-form .btn:focus {

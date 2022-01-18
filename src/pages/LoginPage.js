@@ -120,7 +120,7 @@ function LoginPage() {
             <div class="form-group">
               <button
                 type="submit"
-                class="btn btn-primary btn-lg"
+                class="btn btn-primary btn-lg loginBtn"
                 onClick={handleSubmit}
               >
                 Login

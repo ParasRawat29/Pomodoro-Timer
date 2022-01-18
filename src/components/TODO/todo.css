@@ -1,0 +1,139 @@
+.todoContainer {
+  width: 350px;
+  height: calc(100% - 60px);
+  position: absolute;
+  z-index: 2;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  transform: translate(-97%);
+  /* background-color: rgb(211, 138, 138); */
+  background-color: #2e2d2d;
+  color: whitesmoke;
+  transition: transform 0.5s ease-in-out;
+}
+
+.todoOpen {
+  transform: translate(0%);
+}
+.todoClose {
+  transform: translate(-100%);
+}
+
+.todoContainer .todoCloseBtn {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  top: 0.5rem;
+  right: 0;
+  border-radius: 50%;
+  background-color: rgb(187, 60, 60);
+  color: white;
+  text-align: center;
+}
+.addTodoContainer {
+  margin-top: 1rem;
+  width: 100%;
+  text-align: center;
+}
+.todoContainer h2 {
+  margin: 10px;
+  color: #34b572;
+}
+.addTodoContainer input,
+textarea {
+  display: block;
+  margin: 5px auto;
+  text-align: left;
+  padding: 4px;
+  color: rgb(255, 255, 255);
+  font-size: 1.3rem;
+  border: 1px solid rgb(110, 109, 109);
+  width: 90%;
+  outline: none;
+  background-color: inherit;
+  padding: 10px;
+}
+.addTodoContainer input {
+  font-family: serif;
+}
+.addTodoContainer input:focus,
+.addTodoContainer textarea:focus {
+  outline: none !important;
+  border: 1px solid rgb(32, 138, 94);
+  box-shadow: 0 0 10px #719ece;
+}
+.addTodoContainer textarea {
+  max-height: 80px;
+  resize: none;
+}
+.addTodoContainer form button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  font-size: 3rem;
+  margin: auto;
+  padding: 0;
+  border-radius: 50%;
+  color: #34b572;
+  background-color: transparent;
+  border: 2px solid #34b572;
+}
+.completed {
+  text-decoration: line-through;
+}
+ul {
+  padding: 0.5rem;
+  text-decoration: none;
+  list-style-type: none;
+}
+li {
+  text-decoration: none;
+  border: 3px solid gray;
+  word-wrap: break-word;
+  padding: 10px 5px 10px 10px;
+  margin: 1rem 0;
+}
+
+.todo .title {
+  font-size: 1.4rem;
+  display: inline;
+}
+.todo .todoTime {
+  font-size: 1.7rem;
+  color: #ff8933;
+  margin: 10px 0;
+  display: block;
+}
+.cardBtns {
+  display: inline;
+  float: right;
+  clear: both;
+  margin: 0;
+}
+.todo .cardBtns button {
+  margin: 0 10px;
+  font-size: 1.5rem;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
